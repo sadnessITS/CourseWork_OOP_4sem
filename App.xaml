@@ -1,0 +1,43 @@
+﻿<Application x:Class="HospitalPatientRecords.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:HospitalPatientRecords"
+             xmlns:viewModel="clr-namespace:HospitalPatientRecords.MVVM.ViewModel"
+             xmlns:view="clr-namespace:HospitalPatientRecords.MVVM.View"
+             xmlns:model="clr-namespace:HospitalPatientRecords.MVVM.Model"
+             StartupUri="MVVM/View/FuncShell.xaml">
+    <Application.Resources>
+         <ResourceDictionary>
+             <ResourceDictionary.MergedDictionaries>
+                 <ResourceDictionary Source="Theme/GeneralButtonTheme.xaml"/>
+                 <ResourceDictionary Source="Theme/UsernameFieldTheme.xaml"/>
+                 <ResourceDictionary Source="Theme/MenuButtonTheme.xaml"/>
+                 <ResourceDictionary Source="Theme/GeneralTextTheme.xaml"/>
+                 <ResourceDictionary Source="Theme/SearchBoxTheme.xaml"/>
+                 <ResourceDictionary Source="Theme/DatabaseTheme.xaml"/>
+                 <ResourceDictionary Source="Theme/ColumnHeaderTheme.xaml"/>
+                 <ResourceDictionary Source="Theme/CellTheme.xaml"/>
+                 <ResourceDictionary Source="Theme/AddingFieldTheme.xaml"/>
+                 <ResourceDictionary Source="Theme/SexTheme.xaml"/>
+                 <ResourceDictionary Source="Theme/DiagnosisInfoTheme.xaml"/>
+             </ResourceDictionary.MergedDictionaries>
+             
+             <DataTemplate DataType="{x:Type viewModel:DatabaseViewModel}">
+                 <view:DatabaseView/>
+             </DataTemplate>
+             
+             <DataTemplate DataType="{x:Type viewModel:AdministrateViewModel}">
+                 <view:AdministrateView/>
+             </DataTemplate>
+             
+             <DataTemplate DataType="{x:Type viewModel:AboutViewModel}">
+                 <view:AboutView/>
+             </DataTemplate>
+             
+             <DataTemplate DataType="{x:Type viewModel:AccountantCourseworkContext}">
+                 <view:DatabaseView/>
+             </DataTemplate>
+             
+         </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,54 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style BasedOn="{StaticResource {x:Type TextBox}}"
+           TargetType="{x:Type TextBox}"
+           x:Key="UsernameFieldTheme">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Grid>
+                        <Rectangle StrokeThickness="1"/>
+                        <TextBox Margin="1"
+                                 Text="{TemplateBinding Text}"
+                                 x:Name="Field"
+                                 FontFamily="Helvetica"
+                                 FontWeight="Light"
+                                 FontSize="20"
+                                 HorizontalAlignment="Center"
+                                 Foreground="White"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 Width="235"
+                                 HorizontalContentAlignment="Left"
+                                 Opacity="0.5"/>
+                        
+                        <TextBox Grid.Row="0" Grid.Column="1" 
+                                 IsHitTestVisible="False"
+                                 Text="Username"
+                                 FontFamily="Helvetica"
+                                 FontWeight="Light"
+                                 FontSize="20"
+                                 HorizontalAlignment="Center"
+                                 Foreground="White"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 Width="235"
+                                 HorizontalContentAlignment="Left"
+                                 Opacity="0.5">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=Field}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                        </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
