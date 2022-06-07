@@ -17,10 +17,13 @@ namespace HospitalPatientRecords.MVVM.Model
         
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdUser { get; set; }
+        
         [Text]
         public string Login { get; set; }
+        
         [Text]
         public string Password { get; set; }
+        
         [Text]
         public string DoctorFio { get; set; }
         public string Medicine { get; set; }
