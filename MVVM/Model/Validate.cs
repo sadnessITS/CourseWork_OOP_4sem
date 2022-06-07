@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace HospitalPatientRecords.MVVM.Model
 {
-    class IdPatientAttribute : ValidationAttribute
+    class IdAttribute : ValidationAttribute
     {
         Regex regex = new Regex(@"(?=(^([^\d]*?\d){6}$))");
         public override bool IsValid(object? value)
@@ -38,7 +38,7 @@ namespace HospitalPatientRecords.MVVM.Model
     }
     class AgeAttribute : ValidationAttribute
     {
-        Regex regex = new Regex(@"([1-110]{1,2})");
+        Regex regex = new Regex(@"^(100|[1-9]?\d)$");
         public override bool IsValid(object? value)
         {
             if (regex.IsMatch(value.ToString())) return true;
@@ -69,7 +69,7 @@ namespace HospitalPatientRecords.MVVM.Model
             return false;
         }
     }
-    class PasswordAttribute : ValidationAttribute
+    class TextAttribute : ValidationAttribute
     {
         Regex regex = new Regex(@"^(.{1,33}|[^0-9]*[A-Z]*[А-Я])$");
         public override bool IsValid(object? value)

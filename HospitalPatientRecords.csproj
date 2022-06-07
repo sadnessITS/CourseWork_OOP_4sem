@@ -200,6 +200,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="MVVM\Model\Validate.cs" />
+    <Compile Include="MVVM\Model\VarsDictionary.cs" />
     <Compile Include="MVVM\ViewModel\AboutViewModel.cs" />
     <Compile Include="MVVM\ViewModel\AccountantCourseworkContext.cs" />
     <Compile Include="App.xaml.cs">
@@ -218,6 +219,10 @@
     <Page Include="MVVM\View\FuncShell.xaml" />
     <Page Include="MVVM\View\AuthWindow.xaml" />
     <Page Include="MVVM\View\MessageWindow.xaml" />
+    <Page Include="MVVM\View\AddingDiagnosisWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Theme\AddingFieldTheme.xaml" />
     <Page Include="Theme\DiagnosisInfoTheme.xaml" />
     <Page Include="Theme\GeneralButtonTheme.xaml" />
@@ -264,6 +269,9 @@
     <Compile Include="MVVM\Model\Patient.cs" />
     <Compile Include="MVVM\View\MessageWindow.xaml.cs">
       <DependentUpon>MessageWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\View\AddingDiagnosisWindow.xaml.cs">
+      <DependentUpon>AddingDiagnosisWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

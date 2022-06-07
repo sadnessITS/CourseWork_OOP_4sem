@@ -14,7 +14,7 @@ namespace HospitalPatientRecords.MVVM.Model
             Diagnosis = new HashSet<Diagnosis>();
         }
 
-        [IdPatient]
+        [Id]
         public int IdPatient { get; set; }
         [Fio]
         public string Fio { get; set; }

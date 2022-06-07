@@ -54,6 +54,7 @@ namespace HospitalPatientRecords.MVVM.ViewModel
                     .HasMaxLength(100);
 
                 entity.Property(e => e.IdPatient).HasColumnName("ID_Patient");
+                entity.Property(e => e.IdUser).HasColumnName("ID_User");
 
                 entity.Property(e => e.Medicine)
                     .IsRequired()
@@ -63,6 +64,11 @@ namespace HospitalPatientRecords.MVVM.ViewModel
                     .WithMany(p => p.Diagnosis)
                     .HasForeignKey(d => d.IdPatient)
                     .HasConstraintName("FK_Diagnosis_Patient");
+                
+                entity.HasOne(d => d.IdUserNavigation)
+                    .WithMany(p => p.Diagnosis)
+                    .HasForeignKey(d => d.IdUser)
+                    .HasConstraintName("FK_Diagnosis_User");
 
                 entity.HasOne(d => d.MedicineNavigation)
                     .WithMany(p => p.Diagnosis)
@@ -124,6 +130,15 @@ namespace HospitalPatientRecords.MVVM.ViewModel
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasMaxLength(50);
+                entity.Property(e => e.DoctorFio)
+                    .IsRequired()
+                    .HasMaxLength(50);
+                
+                entity.HasOne(d => d.MedicineNavigation)
+                    .WithMany(p => p.User)
+                    .HasForeignKey(d => d.Medicine)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_User_Medicine");
             });
 
             OnModelCreatingPartial(modelBuilder);

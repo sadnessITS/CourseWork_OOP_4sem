@@ -11,11 +11,14 @@ namespace HospitalPatientRecords.MVVM.Model
     {
         public int IdVisiting { get; set; }
         public int? IdPatient { get; set; }
+        public int IdUser { get; set; }
         public string Medicine { get; set; }
         public string Diagnosis1 { get; set; }
         public DateTime Date { get; set; }
+        public string DoctorFio { get; set; }
 
         public virtual Patient IdPatientNavigation { get; set; }
+        public virtual User IdUserNavigation { get; set; }
         public virtual Medicine MedicineNavigation { get; set; }
     }
 }

@@ -17,6 +17,7 @@ namespace HospitalPatientRecords.MVVM.View;
 public partial class DiagnosisWindow : Window
 {
     AccountantCourseworkContext db;
+    private List<Diagnosis> _diagnosisList;
     public DiagnosisWindow()
     {
         InitializeComponent();
@@ -27,11 +28,8 @@ public partial class DiagnosisWindow : Window
         db = new AccountantCourseworkContext();
         int idPatient = Convert.ToInt32(IdPatientField.Text);
 
-        //var editableList = db.Diagnosis.Where(d => d.IdPatient == idPatient).ToList();
-        //DiagnosisDatabase.ItemsSource = editableList;
-        
-        db.Diagnosis.Where(d => d.IdPatient == idPatient).Load();
-        DiagnosisDatabase.ItemsSource = db.Diagnosis.Local.ToBindingList();
+        _diagnosisList = db.Diagnosis.Where(d => d.IdPatient == idPatient).ToList();
+        DiagnosisDatabase.ItemsSource = _diagnosisList;
 
     } 
     
@@ -59,7 +57,7 @@ public partial class DiagnosisWindow : Window
             .Where(o => o.IdPatient == Convert.ToInt32(IdPatientField.Text))
             .FirstOrDefault();
 
-        if (checkPatient.Fio != IdPatientField.Text || checkPatient.Residency != ResidencyField.Text ||
+        if (checkPatient.Fio != FioField.Text || checkPatient.Residency != ResidencyField.Text ||
             checkPatient.CopyPapers != CopyPapersField.Text)
         {
             try
@@ -78,15 +76,54 @@ public partial class DiagnosisWindow : Window
             catch
             {
                 MessageWindow mesWin = new MessageWindow();
-                mesWin.MessageField.Text = "Sorry, but it seems to be impossible :(";
+                mesWin.MessageField.Text = "It seems to be impossible :(";
                 mesWin.ShowDialog();
             }
         }
-        else db.SaveChanges();
+        else
+        {
+            MessageWindow mesWin = new MessageWindow();
+            mesWin.MessageField.Text = "Info about Patient wasn't changed.\nTable saved!";
+            mesWin.ShowDialog();
+            db.SaveChanges();
+        }
     }
 
     private void Cancel_OnClick(object sender, RoutedEventArgs e)
     {
         this.Close();
     }
+
+    private void AddDiagnosis_Click(object sender, RoutedEventArgs e)
+    {
+        AddingDiagnosisWindow addingDiagnosis = new AddingDiagnosisWindow();
+        addingDiagnosis.IdPatient = Convert.ToInt32(IdPatientField.Text); 
+        addingDiagnosis.ShowDialog();
+        UpdateDiagnosis();
+    }
+
+    // private void ExpandList(string medicine)
+    // {
+    //     int idPatient = Convert.ToInt32(IdPatientField.Text);
+    //     var tempList = db.Diagnosis.Where(d => d.IdPatient == idPatient && d.Medicine == medicine).ToList();
+    //     if (tempList.Count >= 1) _diagnosisList.AddRange(tempList);
+    // }
+    //
+    // private void ReduceList(string medicine)
+    // {
+    //     int idPatient = Convert.ToInt32(IdPatientField.Text);
+    //     var tempList = db.Diagnosis.Where(d => d.IdPatient == idPatient && d.Medicine == medicine).ToList();
+    //     if (tempList.Count != _diagnosisList.Count) _diagnosisList.RemoveRange(_diagnosisList.Count - 1, tempList.Count);
+    // }
+    //
+    // private void DentistCheckBox_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Dentist");
+    // private void DentistCheckBox_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Dentist");
+    // private void ENT_OnChecked(object sender, RoutedEventArgs e) => ExpandList("ENT");
+    // private void ENT_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("ENT");
+    // private void Psychiatrist_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Psychiatrist");
+    // private void Psychiatrist_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Psychiatrist");
+    // private void Surgeon_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Surgeon");
+    // private void Surgeon_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Surgeon");
+    // private void Therapist_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Therapist");
+    // private void Therapist_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Therapist");
 }

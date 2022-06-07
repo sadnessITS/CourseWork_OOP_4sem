@@ -10,12 +10,23 @@ namespace HospitalPatientRecords.MVVM.Model
 {
     public partial class User
     {
+        public User()
+        {
+            Diagnosis = new HashSet<Diagnosis>();
+        }
+        
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdUser { get; set; }
-        [Password]
+        [Text]
         public string Login { get; set; }
-        [Password]
+        [Text]
         public string Password { get; set; }
+        [Text]
+        public string DoctorFio { get; set; }
+        public string Medicine { get; set; }
         public int? Permission { get; set; }
+        
+        public virtual ICollection<Diagnosis> Diagnosis { get; set; }
+        public virtual Medicine MedicineNavigation { get; set; }
     }
 }

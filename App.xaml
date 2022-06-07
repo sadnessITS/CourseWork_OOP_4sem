@@ -5,7 +5,7 @@
              xmlns:viewModel="clr-namespace:HospitalPatientRecords.MVVM.ViewModel"
              xmlns:view="clr-namespace:HospitalPatientRecords.MVVM.View"
              xmlns:model="clr-namespace:HospitalPatientRecords.MVVM.Model"
-             StartupUri="MVVM/View/FuncShell.xaml">
+             StartupUri="MVVM/View/AuthWindow.xaml">
     <Application.Resources>
          <ResourceDictionary>
              <ResourceDictionary.MergedDictionaries>

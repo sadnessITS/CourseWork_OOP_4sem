@@ -65,6 +65,7 @@ namespace HospitalPatientRecords.MVVM.View
                 user.IdUser = (list.Count + 1);
                 user.Login = LoginField.Text;
                 user.Password = hash;
+                user.DoctorFio = DoctorFio.Text;
                 user.Permission = 0;
                 
                 if (Validate(user) == false) return;

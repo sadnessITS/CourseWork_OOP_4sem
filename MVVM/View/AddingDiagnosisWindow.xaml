@@ -1,0 +1,126 @@
+﻿<Window x:Class="HospitalPatientRecords.MVVM.View.AddingDiagnosisWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HospitalPatientRecords.MVVM.View"
+        mc:Ignorable="d"
+        Title="AddingDiagnosisWindow" Height="450" Width="800"
+        AllowsTransparency="True" Background="Transparent"
+        WindowStyle="None" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Icon="../../Source/Image/hospital-logo.png">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+ 
+ 
+        <Border CornerRadius="10" Grid.RowSpan="4" MouseDown="DrugWindow">
+            <Border.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="#001845" Offset="0.0"/>
+                    <GradientStop Color="#002855" Offset="0.5"/>
+                    <GradientStop Color="#023e7d" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+        
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Image Name="Minimize" Height="30" Width="30" Margin="5, 15, 0, 0" MouseUp="Minimize_MouseUp">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=Minimize}" Value="True">
+                                <Setter Property="Source" Value="../../Source/Icon/minus-btn-active.png"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                        <Setter Property="Source" Value="../../Source/Icon/minus-btn-inactive.png"/>
+                    </Style>
+                </Image.Style>
+                <Image.Effect>
+                    <BlurEffect Radius="1"></BlurEffect>
+                </Image.Effect>
+            </Image>
+            <Image Name="Close" Height="30" Width="30" Margin="3, 15, 25, 0" MouseUp="Close_MouseUp">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=Close}" Value="True">
+                                <Setter Property="Source" Value="../../Source/Icon/close-btn-active.png"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                        <Setter Property="Source" Value="../../Source/Icon/close-btn-inactive.png"/>
+                    </Style>
+                </Image.Style>
+                <Image.Effect>
+                    <BlurEffect Radius="1"></BlurEffect>
+                </Image.Effect>
+            </Image>
+        </StackPanel>
+        
+        <Grid Grid.Row="1">
+            <StackPanel Name="Logo" Background="Transparent" Orientation="Horizontal" MouseDown="DrugWindow" HorizontalAlignment="Center">
+                <Image Source="../../Source/Image/hospital-logo.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBlock Text="Adding Diagnosis"
+                           FontWeight="Medium"
+                           FontFamily="Helvetica"
+                           FontSize="21"
+                           Margin="15,0,35,0"
+                           Foreground="White"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+        
+        <Border Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#023e8a" CornerRadius="10" Padding="10">
+            <Grid>
+                <TextBox x:Name="DiagnosisTextBox"
+                         BorderThickness="0"
+                         Foreground="White"
+                         FontWeight="Light"
+                         FontFamily="Helvetica"
+                         FontSize="20"
+                         Background="#023e8a"
+                         Height="200"
+                         Width="500"/>
+                <TextBox Text="Enter the diagnosis"
+                         IsHitTestVisible="False"
+                         FontFamily="Helvetica"
+                         FontWeight="Light"
+                         FontSize="20"
+                         Margin="0,0,290,0"
+                         HorizontalAlignment="Center"
+                         Foreground="White"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Width="200"
+                         HorizontalContentAlignment="Left"
+                         Focusable="False"
+                         Cursor="Arrow"
+                         IsReadOnly="True"
+                         Opacity="0.5">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=DiagnosisTextBox}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+            </Grid>
+        </Border>
+        
+        <StackPanel Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button x:Name="Save" Click="Save_OnClick" Width="200" Height="40" Content="SAVE" FontSize="13" Margin="0,0,0, 0" Style="{StaticResource GeneralButtonTheme}"/>
+            <Button x:Name="Cancel" Click="Cancel_OnClick" Width="200" Height="40" Content="CANCEL" FontSize="13" Margin="30,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
+        </StackPanel>
+    </Grid>
+</Window>

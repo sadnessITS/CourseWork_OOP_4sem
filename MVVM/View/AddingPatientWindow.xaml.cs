@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -57,30 +58,20 @@ namespace HospitalPatientRecords.MVVM.View
                 mesWin.ShowDialog();
                 return;
             }
-
+            
             try
             {
-                Patient patient = new Patient()
-                {
-                    IdPatient = Convert.ToInt32(this.IdPatient.Text),
-                    Fio = this.Fio.Text,
-                    Age = Convert.ToInt32(this.Age.Text),
-                    Sex = sex,
-                    Residency = this.Residency.Text,
-                    CopyPapers = this.CopyPapers.Text
-                };
+                Patient patient = new Patient();
+                patient.IdPatient = Convert.ToInt32(this.IdPatient.Text);
+                patient.Fio = Fio.Text;
+                patient.Age = Convert.ToInt32(this.Age.Text);
+                patient.Sex = sex;
+                patient.Residency = this.Residency.Text;
+                patient.CopyPapers = this.CopyPapers.Text;
                 
                 if (Validate(patient) == false) return;
 
                 db.Patient.Add(patient);
-                
-                List<Medicine> listMedicine = db.Medicine.ToList();
-
-                foreach (var l in listMedicine)
-                {
-                    TemplateDiagnosis(patient.IdPatient, l.Medicine1);
-                }
-
                 db.SaveChanges();
             
                 MessageWindow mesWin = new MessageWindow();
@@ -91,27 +82,9 @@ namespace HospitalPatientRecords.MVVM.View
             catch
             {
                 MessageWindow mesWin = new MessageWindow();
-                mesWin.MessageField.Text = "Incorrect information!";
+                mesWin.MessageField.Text = "Incorrect ID!";
                 mesWin.ShowDialog();
             }
-        }
-        
-        
-        public void TemplateDiagnosis(int idPatient, string medicine)
-        {
-            List<Diagnosis> list = db.Diagnosis.ToList();
-
-            Diagnosis diagnosis = new Diagnosis()
-            {
-                IdVisiting = (list.Count + 1),
-                IdPatient = idPatient,
-                Medicine = medicine,
-                Diagnosis1 = "No Information",
-                Date = DateTime.Now
-            };
-
-            db.Diagnosis.Add(diagnosis);
-            db.SaveChanges();
         }
 
         private void DrugWindow(object sender, MouseButtonEventArgs e)

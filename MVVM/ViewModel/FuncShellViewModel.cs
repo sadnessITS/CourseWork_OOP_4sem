@@ -27,6 +27,9 @@ namespace HospitalPatientRecords.MVVM.ViewModel
             }
         }
         
+        public int CurrentDoctor { get; set; }
+        public string DoctorFio { get; set; }
+        
         public FuncShellViewModel()
         {
             DatabaseVM = new DatabaseViewModel();

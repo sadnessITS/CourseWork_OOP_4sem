@@ -12,11 +12,13 @@ namespace HospitalPatientRecords.MVVM.Model
         public Medicine()
         {
             Diagnosis = new HashSet<Diagnosis>();
+            User = new HashSet<User>();
         }
 
         public string Medicine1 { get; set; }
         public string FrequencyVisits { get; set; }
 
         public virtual ICollection<Diagnosis> Diagnosis { get; set; }
+        public virtual ICollection<User> User { get; set; }
     }
 }

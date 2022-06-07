@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Input;
 using HospitalPatientRecords.MVVM.Model;
 using HospitalPatientRecords.MVVM.ViewModel;
-using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace HospitalPatientRecords.MVVM.View
 {
@@ -94,6 +93,10 @@ namespace HospitalPatientRecords.MVVM.View
             if (user.Permission == 1)
             {
                 FuncShell funcShell = new FuncShell();
+                FuncShellViewModel funcShellViewModel = new FuncShellViewModel();
+                
+                VarsDictionary.varsDictionary.Add(VarsDictionary.key.IdActiveUser, user.IdUser.ToString());
+                VarsDictionary.varsDictionary.Add(VarsDictionary.key.DoctorFio, user.DoctorFio.ToString());
                 funcShell.Show();
                 this.Close();
             }
