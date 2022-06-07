@@ -78,6 +78,36 @@
             
             <Grid Grid.Row="0" Grid.Column="1" Background="Transparent" MouseDown="DrugToolbar"/>
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Border Background="#023e7d" CornerRadius="20" Margin="0,20,20,20" Padding="20,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox x:Name="UserStatusLabel"
+                                 Text="Current Doctor:"
+                                 VerticalAlignment="Center"
+                                 BorderThickness="0"
+                                 Margin="0,0,20,0"
+                                 Foreground="White"
+                                 FontWeight="Regular"
+                                 FontFamily="Helvetica"
+                                 FontSize="14"
+                                 Focusable="False"
+                                 IsReadOnly="True"
+                                 Cursor="Arrow"
+                                 Background="Transparent"/>
+                        <TextBox x:Name="UserStatus"
+                                 Text="Example"
+                                 VerticalAlignment="Center"
+                                 BorderThickness="0"
+                                 Margin="0,0,50,0"
+                                 Foreground="White"
+                                 FontWeight="Light"
+                                 FontFamily="Helvetica"
+                                 FontSize="14"
+                                 Focusable="False"
+                                 IsReadOnly="True"
+                                 Cursor="Arrow"
+                                 Background="Transparent"/>
+                    </StackPanel>
+                </Border>
                 <Image Name="Minimize" Height="30" Width="30" Margin="5, 15, 0, 8" MouseUp="Minimize_MouseUp">
                     <Image.Style>
                         <Style TargetType="Image">

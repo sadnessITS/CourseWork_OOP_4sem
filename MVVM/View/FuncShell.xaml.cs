@@ -1,14 +1,39 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
+using System.Linq;
+using HospitalPatientRecords.MVVM.Model;
 using HospitalPatientRecords.MVVM.ViewModel;
 
 namespace HospitalPatientRecords.MVVM.View
 {
     public partial class FuncShell : Window
     {
+        private AccountantCourseworkContext db;
+        
         public FuncShell()
         {
             InitializeComponent();
+        }
+
+        public void DetermineCurrentUser()
+        {
+            string activeUser;
+            if (!VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.key.IdActiveUser, out activeUser))
+            {
+                MessageWindow mesWin = new MessageWindow();
+                mesWin.MessageField.Text = "We don't have info about doctor :(";
+                mesWin.ShowDialog();
+                return;
+            }
+
+            db = new AccountantCourseworkContext();
+            
+            User checkUser = db.User
+                .Where(o => o.IdUser == Convert.ToInt32(activeUser))
+                .FirstOrDefault();
+
+            UserStatus.Text = checkUser.DoctorFio;
         }
 
         private void DrugToolbar(object sender, MouseButtonEventArgs e)

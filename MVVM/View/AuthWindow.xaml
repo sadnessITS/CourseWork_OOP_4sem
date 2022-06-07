@@ -82,6 +82,7 @@
                     <StackPanel Orientation="Horizontal">
                 <Grid Margin="63,30,0,0">
                     <TextBox x:Name="Username"
+                             Text="sadnessITS"
                              Style="{StaticResource AddingFieldTheme}"
                              Height="25"/>
                     <TextBox Text="Username"
@@ -129,6 +130,7 @@
                 <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                     <Grid Margin="63,0,0,0">
                         <PasswordBox x:Name="PasswordField"
+                                     Password="9398896"
                                      FontFamily="Helvetica"
                                      FontWeight="Light"
                                      FontSize="20"

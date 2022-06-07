@@ -15,7 +15,6 @@ namespace HospitalPatientRecords.MVVM.Model
         public string Medicine { get; set; }
         public string Diagnosis1 { get; set; }
         public DateTime Date { get; set; }
-        public string DoctorFio { get; set; }
 
         public virtual Patient IdPatientNavigation { get; set; }
         public virtual User IdUserNavigation { get; set; }

@@ -296,6 +296,11 @@
                           CellStyle="{StaticResource CellTheme}"
                           ColumnHeaderStyle="{StaticResource ColumnHeaderTheme}">
                     <DataGrid.Columns>
+                        <DataGridTextColumn Header="Doctor's Full Name"
+                                            MinWidth="150"
+                                            Width="*"
+                                            IsReadOnly="False"
+                                            Binding="{Binding DoctorFio}"/>
                         <DataGridTextColumn Header="Medicine"
                                             MinWidth="150"
                                             Width="100"

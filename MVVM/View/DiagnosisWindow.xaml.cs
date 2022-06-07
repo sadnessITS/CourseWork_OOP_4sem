@@ -28,8 +28,20 @@ public partial class DiagnosisWindow : Window
         db = new AccountantCourseworkContext();
         int idPatient = Convert.ToInt32(IdPatientField.Text);
 
-        _diagnosisList = db.Diagnosis.Where(d => d.IdPatient == idPatient).ToList();
-        DiagnosisDatabase.ItemsSource = _diagnosisList;
+        var combinedList = db.Diagnosis.Where(d => d.IdPatient == idPatient).Join(db.User,
+            u => u.IdUser,
+            c => c.IdUser,
+            (u, c) => new
+            {
+                IdVisiting = u.IdVisiting,
+                IdPatient = u.IdPatient,
+                IdUser = c.IdUser,
+                DoctorFio = c.DoctorFio,
+                Medicine = u.Medicine,
+                Diagnosis1 = u.Diagnosis1,
+                Date = u.Date
+            }).ToList();
+        DiagnosisDatabase.ItemsSource = combinedList;
 
     } 
     

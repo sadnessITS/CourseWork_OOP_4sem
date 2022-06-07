@@ -97,6 +97,8 @@ namespace HospitalPatientRecords.MVVM.View
                 
                 VarsDictionary.varsDictionary.Add(VarsDictionary.key.IdActiveUser, user.IdUser.ToString());
                 VarsDictionary.varsDictionary.Add(VarsDictionary.key.DoctorFio, user.DoctorFio.ToString());
+                
+                funcShell.DetermineCurrentUser();
                 funcShell.Show();
                 this.Close();
             }
