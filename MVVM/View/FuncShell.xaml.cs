@@ -18,8 +18,8 @@ namespace HospitalPatientRecords.MVVM.View
 
         public void DetermineCurrentUser()
         {
-            string activeUser;
-            if (!VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.key.IdActiveUser, out activeUser))
+            object currentDoctorObject;
+            if (!VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.Key.CURRENT_DOCTOR, out currentDoctorObject))
             {
                 MessageWindow mesWin = new MessageWindow();
                 mesWin.MessageField.Text = "We don't have info about doctor :(";
@@ -27,13 +27,15 @@ namespace HospitalPatientRecords.MVVM.View
                 return;
             }
 
+            Doctor currentDoctor = currentDoctorObject as Doctor;
+
             db = new AccountantCourseworkContext();
             
-            User checkUser = db.User
-                .Where(o => o.IdUser == Convert.ToInt32(activeUser))
+            Doctor checkDoctor = db.Doctor
+                .Where(doctor => doctor == currentDoctor)
                 .FirstOrDefault();
 
-            UserStatus.Text = checkUser.DoctorFio;
+            UserStatus.Text = checkDoctor.Fio;
         }
 
         private void DrugToolbar(object sender, MouseButtonEventArgs e)

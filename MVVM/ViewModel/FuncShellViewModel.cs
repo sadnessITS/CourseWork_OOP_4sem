@@ -7,11 +7,11 @@ namespace HospitalPatientRecords.MVVM.ViewModel
 {
     public class FuncShellViewModel : ObservableObject
     {
-        public RelayCommand DatabaseCommand { get; set; }
+        public RelayCommand PatientCommand { get; set; }
         public RelayCommand AdministrateCommand { get; set; }
         public RelayCommand AboutCommand { get; set; }
 
-        public DatabaseViewModel DatabaseVM { get; set; }
+        public PatientViewModel PatientVM { get; set; }
         public AdministrateViewModel AdministrateVM { get; set; }
         public AboutViewModel AboutVM { get; set; }
 
@@ -32,15 +32,15 @@ namespace HospitalPatientRecords.MVVM.ViewModel
         
         public FuncShellViewModel()
         {
-            DatabaseVM = new DatabaseViewModel();
+            PatientVM = new PatientViewModel();
             AdministrateVM = new AdministrateViewModel();
             AboutVM = new AboutViewModel();
 
-            CurrentView = DatabaseVM;
+            CurrentView = PatientVM;
 
-            DatabaseCommand = new RelayCommand(o =>
+            PatientCommand = new RelayCommand(o =>
             {
-                CurrentView = DatabaseVM;
+                CurrentView = PatientVM;
             });
             
             AboutCommand = new RelayCommand(o =>

@@ -15,7 +15,7 @@ namespace HospitalPatientRecords.MVVM.View
 {
     public partial class AddingPatientWindow : Window
     {
-        AccountantCourseworkContext db;
+        AccountantCourseworkContext dbContext;
         public AddingPatientWindow()
         {
             InitializeComponent();
@@ -45,7 +45,7 @@ namespace HospitalPatientRecords.MVVM.View
         }
         private void AddingPatient()
         {
-            db = new AccountantCourseworkContext();
+            dbContext = new AccountantCourseworkContext();
 
             string sex;
 
@@ -61,18 +61,26 @@ namespace HospitalPatientRecords.MVVM.View
             
             try
             {
+
                 Patient patient = new Patient();
-                patient.IdPatient = Convert.ToInt32(this.IdPatient.Text);
+                patient.Id = Convert.ToInt32(IdPatient.Text);
                 patient.Fio = Fio.Text;
-                patient.Age = Convert.ToInt32(this.Age.Text);
+                patient.Age = Convert.ToInt32(Age.Text);
                 patient.Sex = sex;
-                patient.Residency = this.Residency.Text;
-                patient.CopyPapers = this.CopyPapers.Text;
+                patient.Residency = Residency.Text;
+
+                MedicalCardHistory medicalCardHistory = new MedicalCardHistory()
+                {
+                    Address = medicalCardAddressTextBox.Text,
+                    Date = DateTime.Now,
+                    ActionWithCard = "Registered",
+                    Patient = patient
+                };
                 
                 if (Validate(patient) == false) return;
 
-                db.Patient.Add(patient);
-                db.SaveChanges();
+                dbContext.Patient.Add(patient);
+                dbContext.SaveChanges();
             
                 MessageWindow mesWin = new MessageWindow();
                 mesWin.TitleField.Text = "Congratulations!";

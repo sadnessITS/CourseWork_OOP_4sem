@@ -25,8 +25,8 @@ namespace HospitalPatientRecords.MVVM.View
         public void UpdateDb()
         {
             db = new AccountantCourseworkContext();
-            db.User.Load();
-            UserDatabase.ItemsSource = db.User.Local.ToBindingList();
+            db.Doctor.Load();
+            UserDatabase.ItemsSource = db.Doctor.Local.ToBindingList();
         }
 
         private void Add_OnClick(object sender, RoutedEventArgs e)
@@ -40,17 +40,17 @@ namespace HospitalPatientRecords.MVVM.View
         {
             db = new AccountantCourseworkContext();
 
-            User itemDel = UserDatabase.SelectedItem as User;
+            Doctor itemDel = UserDatabase.SelectedItem as Doctor;
             
             if (itemDel != null)
             {
-                User userDel = db.User
-                    .Where(o => o.IdUser == itemDel.IdUser)
+                Doctor userDel = db.Doctor
+                    .Where(o => o.Id == itemDel.Id)
                     .FirstOrDefault();
 
-                if (userDel.Permission != 1)
+                if (userDel.Role != Role.ADMIN)
                 {
-                    db.User.Remove(userDel);
+                    db.Doctor.Remove(userDel);
                     db.SaveChanges();
                 }
                 else
@@ -80,12 +80,12 @@ namespace HospitalPatientRecords.MVVM.View
         {
             db = new AccountantCourseworkContext();
 
-            var selectedList = db.User.Where(p => p.Login.Contains(Searcher.Text)).ToList();
+            var selectedList = db.Doctor.Where(p => p.Login.Contains(Searcher.Text)).ToList();
 
             UserDatabase.ItemsSource = selectedList;
         }
         
-        bool Validate(User user)
+        bool Validate(Doctor user)
         {
             var results = new List<ValidationResult>();
             var context = new ValidationContext(user);

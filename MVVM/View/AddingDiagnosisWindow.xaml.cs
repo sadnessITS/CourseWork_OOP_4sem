@@ -2,15 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using HospitalPatientRecords.MVVM.Model;
 using HospitalPatientRecords.MVVM.ViewModel;
 
@@ -21,13 +14,15 @@ namespace HospitalPatientRecords.MVVM.View
     /// </summary>
     public partial class AddingDiagnosisWindow : Window
     {
-        AccountantCourseworkContext db;
+        private AccountantCourseworkContext db;
         
-        public int IdPatient { get; set; }
+        private Patient patient { get; set; }
 
-        public AddingDiagnosisWindow()
+        public AddingDiagnosisWindow(AccountantCourseworkContext dbContext, Patient patient)
         {
             InitializeComponent();
+            this.patient = patient;
+            db = dbContext;
         }
         
         private void DrugWindow(object sender, MouseButtonEventArgs e)
@@ -75,29 +70,29 @@ namespace HospitalPatientRecords.MVVM.View
             db = new AccountantCourseworkContext();
             List<Diagnosis> listDiagnosis = db.Diagnosis.ToList();
 
-            string activeUser;
-            if (!VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.key.IdActiveUser, out activeUser))
+            object currentDoctorObject;
+            if (!VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.Key.CURRENT_DOCTOR, out currentDoctorObject))
             {
                 MessageWindow mesWin = new MessageWindow();
                 mesWin.MessageField.Text = "We don't have info about doctor :(";
                 mesWin.ShowDialog();
                 return;
             }
-            
-            User checkUser = db.User
-                .Where(o => o.IdUser == Convert.ToInt32(activeUser))
+
+            Doctor currentDoctor = (Doctor)currentDoctorObject;
+
+            Doctor checkUser = db.Doctor
+                .Where(o => o.Id == currentDoctor.Id)
                 .FirstOrDefault();
 
             try
             {
                 Diagnosis diagnosis = new Diagnosis();
-                diagnosis.IdVisiting = (listDiagnosis.Count + 1);
-                diagnosis.IdPatient = IdPatient;
-                diagnosis.IdUser = Convert.ToInt32(activeUser);
-                diagnosis.Medicine = checkUser.Medicine;
-                diagnosis.Diagnosis1 = DiagnosisTextBox.Text;
+                diagnosis.Id = (listDiagnosis.Count + 1);
+                diagnosis.Patient = patient;
+                diagnosis.Doctor = currentDoctor;
+                diagnosis.DiagnosticResult = DiagnosisTextBox.Text;
                 diagnosis.Date = DateTime.Now;
-                //diagnosis.
                 
                 if (Validate(diagnosis) == false) return;
 

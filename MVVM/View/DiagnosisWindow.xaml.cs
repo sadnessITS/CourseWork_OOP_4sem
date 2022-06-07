@@ -3,20 +3,15 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using HospitalPatientRecords.MVVM.Model;
 using HospitalPatientRecords.MVVM.ViewModel;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
-using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace HospitalPatientRecords.MVVM.View;
 
 public partial class DiagnosisWindow : Window
 {
-    AccountantCourseworkContext db;
+    AccountantCourseworkContext dbContext;
     private List<Diagnosis> _diagnosisList;
     public DiagnosisWindow()
     {
@@ -25,23 +20,26 @@ public partial class DiagnosisWindow : Window
     
     public void UpdateDiagnosis()
     {
-        db = new AccountantCourseworkContext();
+        dbContext = new AccountantCourseworkContext();
         int idPatient = Convert.ToInt32(IdPatientField.Text);
 
-        var combinedList = db.Diagnosis.Where(d => d.IdPatient == idPatient).Join(db.User,
-            u => u.IdUser,
-            c => c.IdUser,
-            (u, c) => new
-            {
-                IdVisiting = u.IdVisiting,
-                IdPatient = u.IdPatient,
-                IdUser = c.IdUser,
-                DoctorFio = c.DoctorFio,
-                Medicine = u.Medicine,
-                Diagnosis1 = u.Diagnosis1,
-                Date = u.Date
-            }).ToList();
-        DiagnosisDatabase.ItemsSource = combinedList;
+        //var combinedList = dbContext.Diagnosis.Where(d => d.Patient.Id == idPatient).Join(dbContext.Doctor,
+        //    u => u.IdUser,
+        //    c => c.Id,
+        //    (u, c) => new
+        //    {
+        //        IdVisiting = u.IdDiagnosisVisiting,
+        //        IdPatient = u.IdPatient,
+        //        IdUser = c.Id,
+        //        DoctorFio = c.Fio,
+        //        Medicine = u.MedicalSpecialization,
+        //        Diagnosis1 = u.Diagnosis1,
+        //        Date = u.Date
+        //    }).ToList();
+
+        var listDiagnosisDataGrid = dbContext.Diagnosis.ToList();
+
+        DiagnosisDatabase.ItemsSource = listDiagnosisDataGrid;
 
     } 
     
@@ -65,20 +63,18 @@ public partial class DiagnosisWindow : Window
 
     private void Save_OnClick(object sender, RoutedEventArgs e)
     {
-        Patient checkPatient = db.Patient
-            .Where(o => o.IdPatient == Convert.ToInt32(IdPatientField.Text))
+        Patient checkPatient = dbContext.Patient
+            .Where(o => o.Id == Convert.ToInt32(IdPatientField.Text))
             .FirstOrDefault();
 
-        if (checkPatient.Fio != FioField.Text || checkPatient.Residency != ResidencyField.Text ||
-            checkPatient.CopyPapers != CopyPapersField.Text)
+        if (checkPatient.Fio != FioField.Text || checkPatient.Residency != ResidencyField.Text)
         {
             try
             {
                 checkPatient.Fio = FioField.Text;
                 checkPatient.Residency = ResidencyField.Text;
-                checkPatient.CopyPapers = CopyPapersField.Text;
 
-                db.SaveChanges();
+                dbContext.SaveChanges();
 
                 MessageWindow mesWin = new MessageWindow();
                 mesWin.TitleField.Text = "Congratulations!";
@@ -97,7 +93,7 @@ public partial class DiagnosisWindow : Window
             MessageWindow mesWin = new MessageWindow();
             mesWin.MessageField.Text = "Info about Patient wasn't changed.\nTable saved!";
             mesWin.ShowDialog();
-            db.SaveChanges();
+            dbContext.SaveChanges();
         }
     }
 
@@ -108,8 +104,9 @@ public partial class DiagnosisWindow : Window
 
     private void AddDiagnosis_Click(object sender, RoutedEventArgs e)
     {
-        AddingDiagnosisWindow addingDiagnosis = new AddingDiagnosisWindow();
-        addingDiagnosis.IdPatient = Convert.ToInt32(IdPatientField.Text); 
+        int patientId = Convert.ToInt32(IdPatientField.Text);
+        Patient patient = dbContext.Patient.First(patient => patient.Id == patientId);
+        AddingDiagnosisWindow addingDiagnosis = new AddingDiagnosisWindow(dbContext, patient);
         addingDiagnosis.ShowDialog();
         UpdateDiagnosis();
     }

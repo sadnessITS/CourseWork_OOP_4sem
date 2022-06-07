@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HospitalPatientRecords.MVVM.ViewModel
 {
-    public class DatabaseViewModel : ObservableObject
+    public class PatientViewModel : ObservableObject
     {
         public int CurrentDoctor { get; set; }
         public string DoctorFio { get; set; }

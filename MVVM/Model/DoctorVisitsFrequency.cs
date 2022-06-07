@@ -1,26 +1,22 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HospitalPatientRecords.MVVM.Model
 {
-    public class Diagnosis
+    public class DoctorVisitsFrequency
     {
         [Key]
         public int Id { get; set; }
+        public string Frequency { get; set; }
 
         public int? IdPatient { get; set; }
 
         [ForeignKey("IdPatient")]
         public Patient Patient { get; set; }
 
-        public int? IdUser { get; set; }
+        public int? IdDoctor { get; set; }
 
-        [ForeignKey("IdUser")]
+        [ForeignKey("IdDoctor")]
         public Doctor Doctor { get; set; }
-        
-        public string DiagnosticResult  { get; set; }
-        
-        public DateTime Date { get; set; }
     }
 }

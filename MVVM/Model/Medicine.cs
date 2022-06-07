@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 // Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
@@ -7,18 +7,11 @@ using System.Collections.Generic;
 
 namespace HospitalPatientRecords.MVVM.Model
 {
-    public partial class Medicine
+    public partial class MedicalSpecialization
     {
-        public Medicine()
-        {
-            Diagnosis = new HashSet<Diagnosis>();
-            User = new HashSet<User>();
-        }
-
-        public string Medicine1 { get; set; }
+        public int IdMedicine { get; set; }
+        public string MedicineName { get; set; }
         public string FrequencyVisits { get; set; }
 
-        public virtual ICollection<Diagnosis> Diagnosis { get; set; }
-        public virtual ICollection<User> User { get; set; }
     }
 }

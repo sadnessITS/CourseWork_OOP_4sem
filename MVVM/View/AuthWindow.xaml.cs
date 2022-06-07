@@ -54,7 +54,7 @@ namespace HospitalPatientRecords.MVVM.View
         {
             db = new AccountantCourseworkContext();
 
-            User user = db.User.FirstOrDefault(u => u.Login == Username.Text);
+            Doctor user = db.Doctor.FirstOrDefault(u => u.Login == Username.Text);
 
             if (Username.Text == "" || PasswordField.Password == "")
             {
@@ -82,7 +82,7 @@ namespace HospitalPatientRecords.MVVM.View
                 return;
             }
 
-            if (user.Permission == 0)
+            if (user.Role == Role.USER)
             {
                 FuncShell funcShell = new FuncShell();
                 funcShell.UserDb.Visibility = Visibility.Collapsed;
@@ -90,13 +90,12 @@ namespace HospitalPatientRecords.MVVM.View
                 this.Close();
             }
 
-            if (user.Permission == 1)
+            if (user.Role == Role.ADMIN)
             {
                 FuncShell funcShell = new FuncShell();
                 FuncShellViewModel funcShellViewModel = new FuncShellViewModel();
-                
-                VarsDictionary.varsDictionary.Add(VarsDictionary.key.IdActiveUser, user.IdUser.ToString());
-                VarsDictionary.varsDictionary.Add(VarsDictionary.key.DoctorFio, user.DoctorFio.ToString());
+
+                VarsDictionary.varsDictionary.Add(VarsDictionary.Key.CURRENT_DOCTOR, user);
                 
                 funcShell.DetermineCurrentUser();
                 funcShell.Show();

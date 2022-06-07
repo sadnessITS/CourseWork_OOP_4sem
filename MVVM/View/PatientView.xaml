@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="HospitalPatientRecords.MVVM.View.DatabaseView"
+﻿<UserControl x:Class="HospitalPatientRecords.MVVM.View.PatientView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -76,7 +76,7 @@
                     <GradientStop Color="#001845" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
-            <DataGrid x:Name="PatientDatabase"
+            <DataGrid x:Name="patientDataGrid"
                       MouseDoubleClick="PatientDatabase_OnMouseDoubleClick"
                       Margin="10"
                       HorizontalContentAlignment="Center"

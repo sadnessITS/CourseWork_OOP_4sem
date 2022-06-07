@@ -250,7 +250,7 @@
                     Opacity="0.5"/>
             <StackPanel Orientation="Horizontal">
                 <Grid Margin="63,30,0,0">
-                    <TextBox x:Name="CopyPapers"
+                    <TextBox x:Name="medicalCardAddressTextBox"
                              Style="{StaticResource AddingFieldTheme}"
                              Height="25"/>
                     <TextBox Text="Destination of Papers"

@@ -21,7 +21,7 @@ namespace HospitalPatientRecords.MVVM.View
             InitializeComponent();
         }
         
-        bool Validate(User user)
+        bool Validate(Doctor user)
         {
             var results = new List<ValidationResult>();
             var context = new ValidationContext(user);
@@ -56,21 +56,21 @@ namespace HospitalPatientRecords.MVVM.View
         {
             db = new AccountantCourseworkContext();
 
-            List<User> list = db.User.ToList();
+            List<Doctor> list = db.Doctor.ToList();
 
             string hash = CalcHash(PasswordField.Text);
             try
             {
-                User user = new User();
-                user.IdUser = (list.Count + 1);
+                Doctor user = new Doctor();
+                user.Id = (list.Count + 1);
                 user.Login = LoginField.Text;
                 user.Password = hash;
-                user.DoctorFio = DoctorFio.Text;
-                user.Permission = 0;
+                user.Fio = DoctorFio.Text;
+                user.Role = Role.USER;
                 
                 if (Validate(user) == false) return;
 
-                db.User.Add(user);
+                db.Doctor.Add(user);
                 db.SaveChanges();
 
                 MessageWindow mesWin = new MessageWindow();

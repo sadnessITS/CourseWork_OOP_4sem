@@ -1,23 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using HospitalPatientRecords.MVVM.Model;
 using HospitalPatientRecords.MVVM.ViewModel;
 using Microsoft.EntityFrameworkCore;
-using DataGrid = System.Windows.Forms.DataGrid;
 
 namespace HospitalPatientRecords.MVVM.View
 {
-    public partial class DatabaseView : UserControl
+    public partial class PatientView : UserControl
     {
-        AccountantCourseworkContext db;
-        public DatabaseView()
+        private AccountantCourseworkContext dbContext;
+        public PatientView()
         {
             InitializeComponent();
             UpdateDb();
@@ -25,9 +22,9 @@ namespace HospitalPatientRecords.MVVM.View
 
         public void UpdateDb()
         {
-            db = new AccountantCourseworkContext();
-            db.Patient.Load();
-            PatientDatabase.ItemsSource = db.Patient.Local.ToBindingList();
+            dbContext = new AccountantCourseworkContext();
+            dbContext.Patient.Load();
+            patientDataGrid.ItemsSource = dbContext.Patient.Local.ToBindingList();
         }
 
         private void Add_OnClick(object sender, RoutedEventArgs e)
@@ -39,26 +36,26 @@ namespace HospitalPatientRecords.MVVM.View
 
         private void Delete_OnClick(object sender, RoutedEventArgs e)
         {
-            db = new AccountantCourseworkContext();
+            dbContext = new AccountantCourseworkContext();
 
-            Patient itemDel = PatientDatabase.SelectedItem as Patient;
+            Patient itemDel = patientDataGrid.SelectedItem as Patient;
             
             if (itemDel != null)
             {
-                Patient patientDel = db.Patient
-                    .Where(o => o.IdPatient == itemDel.IdPatient)
+                Patient patientDel = dbContext.Patient
+                    .Where(o => o.Id == itemDel.Id)
                     .FirstOrDefault();
                 
-                List<Diagnosis> diagnosisDel = db.Diagnosis
-                    .Where(o => o.IdPatient == itemDel.IdPatient).ToList();
+                List<Diagnosis> diagnosisDel = dbContext.Diagnosis
+                    .Where(o => o.IdPatient == itemDel.Id).ToList();
 
                 foreach (var d in diagnosisDel)
                 {
-                    db.Diagnosis.Remove(d);
+                    dbContext.Diagnosis.Remove(d);
                 }
 
-                db.Patient.Remove(patientDel);
-                db.SaveChanges();
+                dbContext.Patient.Remove(patientDel);
+                dbContext.SaveChanges();
                 
                 UpdateDb();
             }
@@ -74,19 +71,23 @@ namespace HospitalPatientRecords.MVVM.View
 
         private void Diagnosis_OnClick(object sender, RoutedEventArgs e)
         {
-            db = new AccountantCourseworkContext();
+            dbContext = new AccountantCourseworkContext();
 
-            Patient itemDiagnosis = PatientDatabase.SelectedItem as Patient;
+            Patient patient = patientDataGrid.SelectedItem as Patient;
 
-            if (itemDiagnosis != null)
+            MedicalCardHistory medicalCardHistory = dbContext.MedicalCardHistory
+                .OrderByDescending(history => history.Date)
+                .FirstOrDefault((history) => history.Patient == patient);
+
+            if (patient != null)
             {
                 DiagnosisWindow diagnosisWindow = new DiagnosisWindow();
-                diagnosisWindow.IdPatientField.Text = Convert.ToString(itemDiagnosis.IdPatient);
-                diagnosisWindow.FioField.Text = itemDiagnosis.Fio;
-                diagnosisWindow.AgeField.Text = Convert.ToString(itemDiagnosis.Age);
-                diagnosisWindow.SexField.Text = itemDiagnosis.Sex;
-                diagnosisWindow.ResidencyField.Text = itemDiagnosis.Residency;
-                diagnosisWindow.CopyPapersField.Text = itemDiagnosis.CopyPapers;
+                diagnosisWindow.IdPatientField.Text = Convert.ToString(patient.Id);
+                diagnosisWindow.FioField.Text = patient.Fio;
+                diagnosisWindow.AgeField.Text = Convert.ToString(patient.Age);
+                diagnosisWindow.SexField.Text = patient.Sex;
+                diagnosisWindow.ResidencyField.Text = patient.Residency;
+                diagnosisWindow.CopyPapersField.Text = medicalCardHistory.Address;
                 diagnosisWindow.UpdateDiagnosis();
                 diagnosisWindow.ShowDialog();
                 UpdateDb();
@@ -101,19 +102,23 @@ namespace HospitalPatientRecords.MVVM.View
 
         private void PatientDatabase_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            db = new AccountantCourseworkContext();
+            dbContext = new AccountantCourseworkContext();
 
-            Patient itemDiagnosis = PatientDatabase.SelectedItem as Patient;
+            Patient patient = patientDataGrid.SelectedItem as Patient;
 
-            if (itemDiagnosis != null)
+            MedicalCardHistory medicalCardHistory = dbContext.MedicalCardHistory
+                .OrderByDescending(history => history.Date)
+                .FirstOrDefault((history) => history.Patient == patient);
+
+            if (patient != null)
             {
                 DiagnosisWindow diagnosisWindow = new DiagnosisWindow();
-                diagnosisWindow.IdPatientField.Text = Convert.ToString(itemDiagnosis.IdPatient);
-                diagnosisWindow.FioField.Text = itemDiagnosis.Fio;
-                diagnosisWindow.AgeField.Text = Convert.ToString(itemDiagnosis.Age);
-                diagnosisWindow.SexField.Text = itemDiagnosis.Sex;
-                diagnosisWindow.ResidencyField.Text = itemDiagnosis.Residency;
-                diagnosisWindow.CopyPapersField.Text = itemDiagnosis.CopyPapers;
+                diagnosisWindow.IdPatientField.Text = Convert.ToString(patient.Id);
+                diagnosisWindow.FioField.Text = patient.Fio;
+                diagnosisWindow.AgeField.Text = Convert.ToString(patient.Age);
+                diagnosisWindow.SexField.Text = patient.Sex;
+                diagnosisWindow.ResidencyField.Text = patient.Residency;
+                diagnosisWindow.CopyPapersField.Text = medicalCardHistory.Address;
                 diagnosisWindow.UpdateDiagnosis();
                 diagnosisWindow.ShowDialog();
                 UpdateDb();
@@ -128,11 +133,11 @@ namespace HospitalPatientRecords.MVVM.View
 
         private void Searcher_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            db = new AccountantCourseworkContext();
+            dbContext = new AccountantCourseworkContext();
 
-            var selectedList = db.Patient.Where(checkSearchCriterias()).ToList();
+            var selectedList = dbContext.Patient.Where(checkSearchCriterias()).ToList();
 
-            PatientDatabase.ItemsSource = selectedList;
+            patientDataGrid.ItemsSource = selectedList;
         }
 
         private Expression<Func<Patient, bool>> checkSearchCriterias()

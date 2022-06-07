@@ -4,11 +4,10 @@ namespace HospitalPatientRecords.MVVM.Model;
 
 public class VarsDictionary
 {
-    public enum key
+    public enum Key
     {
-        IdActiveUser,
-        DoctorFio
+        CURRENT_DOCTOR
     }
 
-    public static Dictionary<key, string> varsDictionary = new Dictionary<key, string>();
+    public static Dictionary<Key, object> varsDictionary = new Dictionary<Key, object>();
 }
