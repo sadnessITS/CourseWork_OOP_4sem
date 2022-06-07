@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
@@ -7,7 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using HospitalPatientRecords.MVVM.Model;
 using HospitalPatientRecords.MVVM.ViewModel;
-using Microsoft.EntityFrameworkCore;
 
 namespace HospitalPatientRecords.MVVM.View
 {

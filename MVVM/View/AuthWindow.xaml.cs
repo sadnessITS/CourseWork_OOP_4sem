@@ -12,7 +12,7 @@ namespace HospitalPatientRecords.MVVM.View
 {
     public partial class AuthWindow : Window
     {
-        private AccountantCourseworkContext db;
+        private AccountantCourseworkContext dbContext;
         public AuthWindow()
         {
             InitializeComponent();
@@ -52,9 +52,14 @@ namespace HospitalPatientRecords.MVVM.View
 
         private void Login_OnClick(object sender, RoutedEventArgs e)
         {
-            db = new AccountantCourseworkContext();
+            dbContext = new AccountantCourseworkContext();
 
-            Doctor user = db.Doctor.FirstOrDefault(u => u.Login == Username.Text);
+            dbContext.Database.Initialize(true);
+
+            if (dbContext.Doctor.Count() == 0)
+                addDefaultAdmin(dbContext);
+
+            Doctor user = dbContext.Doctor.FirstOrDefault(u => u.Login == Username.Text);
 
             if (Username.Text == "" || PasswordField.Password == "")
             {
@@ -101,6 +106,25 @@ namespace HospitalPatientRecords.MVVM.View
                 funcShell.Show();
                 this.Close();
             }
+        }
+
+        private void addDefaultAdmin(AccountantCourseworkContext dbContext)
+        {
+            MedicalSpecialization adminCpecialization = dbContext.MedicalSpecialization.Add(new MedicalSpecialization()
+            {
+                Name = "ADMIN"
+            });
+
+            dbContext.Doctor.Add(new Doctor()
+            {
+                Login = "admin",
+                Password = CalcHash("admin"),
+                Fio = "admin",
+                Role = Role.ADMIN,
+                MedicalSpecialization = adminCpecialization
+            });
+
+            dbContext.SaveChanges();
         }
     }
 }

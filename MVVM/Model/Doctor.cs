@@ -20,8 +20,28 @@ namespace HospitalPatientRecords.MVVM.Model
         public int? IdMedicalSpecialization { get; set; }
 
         [ForeignKey("IdMedicalSpecialization")]
+        [Required]
         public MedicalSpecialization MedicalSpecialization { get; set; }
 
         public Role Role { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+
+            Doctor doctor = obj as Doctor;
+            
+            if (doctor == null)
+                return false;
+
+            if (doctor.Id == Id &&
+                doctor.Login == Login &&
+                doctor.Password == Password &&
+                doctor.Fio == Fio &&
+                doctor.Role == Role)
+                return true;
+
+            return false;
+        }
     }
 }

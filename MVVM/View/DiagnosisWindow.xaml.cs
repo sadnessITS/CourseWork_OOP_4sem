@@ -5,7 +5,6 @@ using System.Windows.Input;
 using System.Linq;
 using HospitalPatientRecords.MVVM.Model;
 using HospitalPatientRecords.MVVM.ViewModel;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace HospitalPatientRecords.MVVM.View;
 

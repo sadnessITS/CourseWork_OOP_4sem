@@ -32,7 +32,7 @@ namespace HospitalPatientRecords.MVVM.View
             db = new AccountantCourseworkContext();
             
             Doctor checkDoctor = db.Doctor
-                .Where(doctor => doctor == currentDoctor)
+                .Where(doctor => doctor.Id == currentDoctor.Id)
                 .FirstOrDefault();
 
             UserStatus.Text = checkDoctor.Fio;

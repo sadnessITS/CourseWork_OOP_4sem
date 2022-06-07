@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Input;
 using HospitalPatientRecords.MVVM.Model;
 using HospitalPatientRecords.MVVM.ViewModel;
-using Microsoft.EntityFrameworkCore;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace HospitalPatientRecords.MVVM.View

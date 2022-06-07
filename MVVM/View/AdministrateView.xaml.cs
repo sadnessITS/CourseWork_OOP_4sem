@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using HospitalPatientRecords.MVVM.Model;
 using HospitalPatientRecords.MVVM.ViewModel;
-using Microsoft.EntityFrameworkCore;
 using ValidationResult = System.ComponentModel.DataAnnotations.ValidationResult;
 
 namespace HospitalPatientRecords.MVVM.View

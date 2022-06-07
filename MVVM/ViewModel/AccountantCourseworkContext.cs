@@ -1,13 +1,17 @@
 ﻿using HospitalPatientRecords.MVVM.Model;
-using Microsoft.EntityFrameworkCore;
+using System.Data.Entity;
 
 namespace HospitalPatientRecords.MVVM.ViewModel
 {
     public partial class AccountantCourseworkContext : DbContext
     {
-        public AccountantCourseworkContext() { }
+        public AccountantCourseworkContext() : base("name = AccountantCourseworkEntities") { }
+        
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer(@"Server=(DESKTOP-5R6G6IU);Database=AccountantCoursework;Trusted_Connection=True;");
+        //}
 
-        public AccountantCourseworkContext(DbContextOptions<AccountantCourseworkContext> options) : base(options) { }
 
         public DbSet<Diagnosis> Diagnosis { get; set; }
 
@@ -15,7 +19,7 @@ namespace HospitalPatientRecords.MVVM.ViewModel
 
         public DbSet<MedicalCardHistory> MedicalCardHistory { get; set; }
 
-        public DbSet<MedicalSpecialization> Medicine { get; set; }
+        public DbSet<MedicalSpecialization> MedicalSpecialization { get; set; }
 
         public DbSet<Patient> Patient { get; set; }
 
