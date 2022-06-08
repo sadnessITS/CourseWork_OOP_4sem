@@ -38,6 +38,10 @@
                  <view:PatientView/>
              </DataTemplate>
              
+             <DataTemplate DataType="{x:Type viewModel:ScheduleViewModel}">
+                 <view:ScheduleView/>
+             </DataTemplate>
+             
          </ResourceDictionary>
     </Application.Resources>
 </Application>

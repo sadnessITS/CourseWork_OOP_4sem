@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
@@ -14,10 +16,14 @@ namespace HospitalPatientRecords.MVVM.View
 {
     public partial class AddingUserWindow : Window
     {
-        AccountantCourseworkContext db;
-        public AddingUserWindow()
+        AccountantCourseworkContext dbContext;
+        public AddingUserWindow(AccountantCourseworkContext dbContext)
         {
             InitializeComponent();
+            this.dbContext = dbContext;
+            List<MedicalSpecialization> specializationsWithoutAdmin =
+                dbContext.MedicalSpecialization.Where((sp) => sp.Name != "ADMIN").ToList();
+            specializationsCombobox.ItemsSource = specializationsWithoutAdmin;
         }
         
         bool Validate(Doctor user)
@@ -53,23 +59,32 @@ namespace HospitalPatientRecords.MVVM.View
         
         private void AddingUser()
         {
-            db = new AccountantCourseworkContext();
-
-            List<Doctor> list = db.Doctor.ToList();
+            List<Doctor> list = dbContext.Doctor.ToList();
 
             string hash = CalcHash(PasswordField.Text);
+
+            MedicalSpecialization selectedSpecialization = specializationsCombobox.SelectedItem as MedicalSpecialization;
+            
+            if (selectedSpecialization == null)
+            {
+                MessageWindow mesWin = new MessageWindow();
+                mesWin.MessageField.Text = "Select specialization!";
+                mesWin.ShowDialog();
+                return;
+            }
             try
             {
-                Doctor user = new Doctor();
-                user.Login = LoginField.Text;
-                user.Password = hash;
-                user.Fio = DoctorFio.Text;
-                user.Role = Role.USER;
+                Doctor doctor = new Doctor();
+                doctor.Login = LoginField.Text;
+                doctor.Password = hash;
+                doctor.Fio = DoctorFio.Text;
+                doctor.Role = Role.USER;
+                doctor.MedicalSpecialization = selectedSpecialization;
                 
-                if (Validate(user) == false) return;
+                if (Validate(doctor) == false) return;
 
-                db.Doctor.Add(user);
-                db.SaveChanges();
+                dbContext.Doctor.Add(doctor);
+                dbContext.SaveChanges();
 
                 MessageWindow mesWin = new MessageWindow();
                 mesWin.TitleField.Text = "Congratulations!";

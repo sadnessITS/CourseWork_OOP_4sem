@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:HospitalPatientRecords.MVVM.View"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
-        Title="AuthWindow" Height="600" Width="380"
+        Title="AuthWindow" Height="550" Width="380"
         AllowsTransparency="True" Background="Transparent"
         WindowStyle="None" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
@@ -237,49 +237,6 @@
                         </TextBox.Style>
                     </TextBox>
                     <iconPacks:PackIconFontAwesome Kind="LocationArrowSolid" 
-                                                   VerticalAlignment="Center" 
-                                                   HorizontalAlignment="Right" 
-                                                   Foreground="White"
-                                                   Focusable="False"
-                                                   Cursor="Arrow"/>
-                </Grid>
-            </StackPanel>
-            <Border Width="250"
-                    Height="2"
-                    Background="White"
-                    Opacity="0.5"/>
-            <StackPanel Orientation="Horizontal">
-                <Grid Margin="63,30,0,0">
-                    <TextBox x:Name="medicalCardAddressTextBox"
-                             Style="{StaticResource AddingFieldTheme}"
-                             Height="25"/>
-                    <TextBox Text="Destination of Papers"
-                             IsHitTestVisible="False"
-                             FontFamily="Helvetica"
-                             FontWeight="Light"
-                             FontSize="20"
-                             HorizontalAlignment="Center"
-                             Foreground="White"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             Width="250"
-                             HorizontalContentAlignment="Left"
-                             Focusable="False"
-                             Cursor="Arrow"
-                             IsReadOnly="True"
-                             Opacity="0.5">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=medicalCardAddressTextBox}" Value="">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                                <Setter Property="Visibility" Value="Hidden"/>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-                    <iconPacks:PackIconFontAwesome Kind="SearchLocationSolid" 
                                                    VerticalAlignment="Center" 
                                                    HorizontalAlignment="Right" 
                                                    Foreground="White"

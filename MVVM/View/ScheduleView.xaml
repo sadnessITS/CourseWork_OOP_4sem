@@ -1,10 +1,12 @@
-﻿<UserControl x:Class="HospitalPatientRecords.MVVM.View.AdministrateView"
+<UserControl x:Class="HospitalPatientRecords.MVVM.View.ScheduleView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:HospitalPatientRecords.MVVM.View"
              xmlns:viewModel="clr-namespace:HospitalPatientRecords.MVVM.ViewModel"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             
              mc:Ignorable="d"
              d:DesignHeight="470" d:DesignWidth="800"
              Background="Transparent">
@@ -13,7 +15,7 @@
         <viewModel:AccountantCourseworkContext/>
     </UserControl.DataContext>
     
-    <Grid Height="Auto">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
@@ -38,7 +40,7 @@
                                  Background="Transparent"
                                  VerticalAlignment="Center"
                                  Padding="5"
-                                 Foreground="#CFCFCF"/>
+                                 Foreground="White"/>
                         <TextBox IsHitTestVisible="False"
                                  Text="Search"
                                  FontFamily="Ubuntu"
@@ -64,8 +66,6 @@
                 </Border>
                 <Button x:Name="Add" Width="130" Click="Add_OnClick" Height="40" Content="ADD" FontSize="13" Margin="10,0,0,10" Style="{StaticResource GeneralButtonTheme}"/>
                 <Button x:Name="Delete" Width="130" Click="Delete_OnClick" Height="40" Content="DELETE" FontSize="13" Margin="10,0,0,10" Style="{StaticResource GeneralButtonTheme}"/>
-                <Button x:Name="Save" Width="130" Click="Save_OnClick" Height="40" Content="SAVE" FontSize="13" Margin="10,0,0,10" Style="{StaticResource GeneralButtonTheme}"/>
-                <Button x:Name="Specialization" Width="130" Click="Specialization_OnClick" Height="40" Content="Specialization" FontSize="13" Margin="10,0,0,10" Style="{StaticResource GeneralButtonTheme}"/>
             </StackPanel>
         </Grid>
         
@@ -77,33 +77,30 @@
                     <GradientStop Color="#001845" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
-            <DataGrid x:Name="UserDatabase"
+            <DataGrid x:Name="scheduleDataGrid"
                       Margin="10"
-                      IsReadOnly="False"
+                      HorizontalContentAlignment="Center"
+                      VerticalContentAlignment="Center"
                       Style="{StaticResource DatabaseTheme}"
                       CellStyle="{StaticResource CellTheme}"
                       ColumnHeaderStyle="{StaticResource ColumnHeaderTheme}">
             <DataGrid.Columns>
-                    <DataGridTextColumn Header="Login"
+                    <DataGridTextColumn Header="Card Number"
                                         MinWidth="150"
                                         Width="*"
-                                        IsReadOnly="True"
-                                        Binding="{Binding Login}"/>
-                    <DataGridTextColumn Header="Fio"
+                                        Binding="{Binding CardNumber}"/>
+                    <DataGridTextColumn Header="Full Name"
                                         MinWidth="150"
                                         Width="*"
-                                        IsReadOnly="False"
-                                        Binding="{Binding Fio}"/>
-                    <DataGridTextColumn Header="Specialization"
+                                        Binding="{Binding Patient.Fio}"/>
+                    <DataGridTextColumn Header="Anamnesis"
                                         MinWidth="150"
                                         Width="*"
-                                        IsReadOnly="False"
-                                        Binding="{Binding MedicalSpecialization.Name}"/>
-                    <DataGridTextColumn Header="Role"
+                                        Binding="{Binding Patient.Age}"/>
+                    <DataGridTextColumn Header="Date"
                                         MinWidth="150"
                                         Width="*"
-                                        IsReadOnly="True"
-                                        Binding="{Binding Role}"/>
+                                        Binding="{Binding Patient.Residency}"/>
             </DataGrid.Columns>
             </DataGrid>
         </Border>

@@ -9,11 +9,14 @@ namespace HospitalPatientRecords.MVVM.View
 {
     public partial class FuncShell : Window
     {
-        private AccountantCourseworkContext db;
+        private AccountantCourseworkContext dbContext;
         
-        public FuncShell()
+        public FuncShell(AccountantCourseworkContext dbContext)
         {
             InitializeComponent();
+            this.dbContext = dbContext;
+            
+            VarsDictionary.varsDictionary.Add(VarsDictionary.Key.DB_CONTEXT, this.dbContext);
         }
 
         public void DetermineCurrentUser()
@@ -29,9 +32,7 @@ namespace HospitalPatientRecords.MVVM.View
 
             Doctor currentDoctor = currentDoctorObject as Doctor;
 
-            db = new AccountantCourseworkContext();
-            
-            Doctor checkDoctor = db.Doctor
+            Doctor checkDoctor = dbContext.Doctor
                 .Where(doctor => doctor.Id == currentDoctor.Id)
                 .FirstOrDefault();
 

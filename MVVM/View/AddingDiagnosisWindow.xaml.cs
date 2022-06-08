@@ -9,18 +9,16 @@ using HospitalPatientRecords.MVVM.ViewModel;
 
 namespace HospitalPatientRecords.MVVM.View
 {
-    /// <summary>
-    /// Interaction logic for Window1.xaml
-    /// </summary>
     public partial class AddingDiagnosisWindow : Window
     {
         private AccountantCourseworkContext dbContext;
         
         private Patient patient { get; set; }
 
-        public AddingDiagnosisWindow(Patient patient)
+        public AddingDiagnosisWindow(AccountantCourseworkContext dbContext, Patient patient)
         {
             InitializeComponent();
+            this.dbContext = dbContext;
             this.patient = patient;
         }
         
@@ -44,7 +42,6 @@ namespace HospitalPatientRecords.MVVM.View
         
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
-            dbContext = new AccountantCourseworkContext();
             List<Diagnosis> listDiagnosis = dbContext.Diagnosis.ToList();
 
             object currentDoctorObject;
@@ -61,29 +58,23 @@ namespace HospitalPatientRecords.MVVM.View
                 .Where(o => o.Id == currentDoctor.Id)
                 .FirstOrDefault();
 
-            Patient checkPatient = dbContext.Patient
-                .Where(p => p.Id == patient.Id)
-                .FirstOrDefault();
-            
-            Diagnosis diagnosis = new Diagnosis();
-            diagnosis.Patient = checkPatient;
-            diagnosis.Doctor = checkDoctor;
-            diagnosis.DiagnosticResult = DiagnosisTextBox.Text;
-            diagnosis.Date = DateTime.Now;
-
-            dbContext.Diagnosis.Add(diagnosis);
-            
-            dbContext.SaveChanges();
-            
-            MessageWindow mesWin2 = new MessageWindow();
-            mesWin2.TitleField.Text = "Congratulations!";
-            mesWin2.MessageField.Text = "Diagnosis was added!";
-            mesWin2.ShowDialog();
-            this.Close();
-
             try
             {
-                
+                Diagnosis diagnosis = new Diagnosis();
+                diagnosis.Patient = patient;
+                diagnosis.Doctor = checkDoctor;
+                diagnosis.DiagnosticResult = DiagnosisTextBox.Text;
+                diagnosis.Date = DateTime.Now;
+
+                dbContext.Diagnosis.Add(diagnosis);
+            
+                dbContext.SaveChanges();
+            
+                MessageWindow mesWin2 = new MessageWindow();
+                mesWin2.TitleField.Text = "Congratulations!";
+                mesWin2.MessageField.Text = "Diagnosis was added!";
+                mesWin2.ShowDialog();
+                this.Close();
             }
             catch
             {

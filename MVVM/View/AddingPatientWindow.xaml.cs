@@ -15,9 +15,10 @@ namespace HospitalPatientRecords.MVVM.View
     public partial class AddingPatientWindow : Window
     {
         AccountantCourseworkContext dbContext;
-        public AddingPatientWindow()
+        public AddingPatientWindow(AccountantCourseworkContext dbContext)
         {
             InitializeComponent();
+            this.dbContext = dbContext;
         }
         
         bool ValidatePatient(Patient patient)
@@ -66,8 +67,6 @@ namespace HospitalPatientRecords.MVVM.View
         }
         private void AddingPatient()
         {
-            dbContext = new AccountantCourseworkContext();
-
             string sex;
 
             if (this.Man.IsChecked == true) sex = Convert.ToString(this.Man.Content);
@@ -92,7 +91,7 @@ namespace HospitalPatientRecords.MVVM.View
                 MedicalCardHistory medicalCardHistory = new MedicalCardHistory()
                 {
                     CardNumber = Convert.ToInt32(cardNumber.Text),
-                    Address = medicalCardAddressTextBox.Text,
+                    Address = "Registry",
                     Date = DateTime.Now,
                     ActionWithCard = "Registered",
                     Patient = patient

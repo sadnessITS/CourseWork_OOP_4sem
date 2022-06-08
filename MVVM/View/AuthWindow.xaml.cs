@@ -89,7 +89,7 @@ namespace HospitalPatientRecords.MVVM.View
 
             if (user.Role == Role.USER)
             {
-                FuncShell funcShell = new FuncShell();
+                FuncShell funcShell = new FuncShell(dbContext);
                 funcShell.UserDb.Visibility = Visibility.Collapsed;
                 funcShell.Show();
                 this.Close();
@@ -97,7 +97,7 @@ namespace HospitalPatientRecords.MVVM.View
 
             if (user.Role == Role.ADMIN)
             {
-                FuncShell funcShell = new FuncShell();
+                FuncShell funcShell = new FuncShell(dbContext);
                 FuncShellViewModel funcShellViewModel = new FuncShellViewModel();
 
                 VarsDictionary.varsDictionary.Add(VarsDictionary.Key.CURRENT_DOCTOR, user);
@@ -110,10 +110,8 @@ namespace HospitalPatientRecords.MVVM.View
 
         private void addDefaultAdmin(AccountantCourseworkContext dbContext)
         {
-            MedicalSpecialization adminCpecialization = dbContext.MedicalSpecialization.Add(new MedicalSpecialization()
-            {
-                Name = "ADMIN"
-            });
+            MedicalSpecialization adminSpecialization =
+                dbContext.MedicalSpecialization.Add(new MedicalSpecialization("ADMIN"));
 
             dbContext.Doctor.Add(new Doctor()
             {
@@ -121,7 +119,7 @@ namespace HospitalPatientRecords.MVVM.View
                 Password = CalcHash("admin"),
                 Fio = "admin",
                 Role = Role.ADMIN,
-                MedicalSpecialization = adminCpecialization
+                MedicalSpecialization = adminSpecialization
             });
 
             dbContext.SaveChanges();

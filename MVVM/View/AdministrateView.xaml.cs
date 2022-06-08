@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -15,43 +16,53 @@ namespace HospitalPatientRecords.MVVM.View
 {
     public partial class AdministrateView : UserControl
     {
-        AccountantCourseworkContext db;
+        AccountantCourseworkContext dbContext;
         public AdministrateView()
         {
             InitializeComponent();
+
+            object db;
+
+            VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.Key.DB_CONTEXT, out db);
+
+            dbContext = db as AccountantCourseworkContext;
+            
             UpdateDb();
         }
 
         public void UpdateDb()
         {
-            db = new AccountantCourseworkContext();
-            db.Doctor.Load();
-            UserDatabase.ItemsSource = db.Doctor.Local.ToBindingList();
+            var listDoctors = dbContext.Doctor.ToList();
+            
+            foreach (var d in listDoctors)
+            {
+                d.MedicalSpecialization = dbContext.MedicalSpecialization.Where(item => item.Id == d.IdMedicalSpecialization).FirstOrDefault();
+            }
+            
+            UserDatabase.ItemsSource = listDoctors;
         }
 
         private void Add_OnClick(object sender, RoutedEventArgs e)
         {
-            AddingUserWindow addingForm = new AddingUserWindow();
+            AddingUserWindow addingForm = new AddingUserWindow(dbContext);
             addingForm.ShowDialog();
             UpdateDb();
         }
 
         private void Delete_OnClick(object sender, RoutedEventArgs e)
         {
-            db = new AccountantCourseworkContext();
-
             Doctor itemDel = UserDatabase.SelectedItem as Doctor;
             
             if (itemDel != null)
             {
-                Doctor userDel = db.Doctor
+                Doctor userDel = dbContext.Doctor
                     .Where(o => o.Id == itemDel.Id)
                     .FirstOrDefault();
 
                 if (userDel.Role != Role.ADMIN)
                 {
-                    db.Doctor.Remove(userDel);
-                    db.SaveChanges();
+                    dbContext.Doctor.Remove(userDel);
+                    dbContext.SaveChanges();
                 }
                 else
                 {
@@ -78,11 +89,14 @@ namespace HospitalPatientRecords.MVVM.View
 
         private void Searcher_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            db = new AccountantCourseworkContext();
-
-            var selectedList = db.Doctor.Where(p => p.Login.Contains(Searcher.Text)).ToList();
+            var selectedList = dbContext.Doctor.Where(checkSearchCriterias()).ToList();
 
             UserDatabase.ItemsSource = selectedList;
+        }
+
+        private Expression<Func<Doctor, bool>> checkSearchCriterias()
+        {
+            return m => m.Login.Contains(Searcher.Text) || m.Fio.Contains(Searcher.Text);
         }
         
         bool Validate(Doctor user)
@@ -106,6 +120,22 @@ namespace HospitalPatientRecords.MVVM.View
                 return false;
             }
             else return true;
+        }
+
+        private void Specialization_OnClick(object sender, RoutedEventArgs e)
+        {
+            MedicalSpecializationView medicalSpecializationView = new MedicalSpecializationView(dbContext);
+            medicalSpecializationView.ShowDialog();
+        }
+
+        private void Save_OnClick(object sender, RoutedEventArgs e)
+        {
+            dbContext.SaveChanges();
+            
+            MessageWindow mesWin = new MessageWindow();
+            mesWin.TitleField.Text = "Congratulations!";
+            mesWin.MessageField.Text = "Name was changed!";
+            mesWin.ShowDialog();
         }
     }
 }

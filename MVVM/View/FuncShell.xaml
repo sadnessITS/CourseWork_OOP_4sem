@@ -67,6 +67,13 @@
                              Style="{StaticResource MenuButtonTheme}"
                              Command="{Binding AdministrateCommand}"/>
                 
+                <RadioButton Content="Schedule"
+                             x:Name="ScheduleDb"
+                             Height="50"
+                             FontSize="14"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding ScheduleCommand}"/>
+                
                 <RadioButton Content="About"
                              x:Name="AboutUserController"
                              Height="50"

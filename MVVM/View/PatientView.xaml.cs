@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Serialization.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,13 +18,18 @@ namespace HospitalPatientRecords.MVVM.View
         public PatientView()
         {
             InitializeComponent();
+
+            object db;
+
+            VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.Key.DB_CONTEXT, out db);
+
+            dbContext = db as AccountantCourseworkContext;
+            
             UpdateDb();
         }
 
         public void UpdateDb()
         {
-            dbContext = new AccountantCourseworkContext();
-
             List<MedicalCardHistory> selectedMedicalCardHistories = new List<MedicalCardHistory>();
             MedicalCardHistory medicalCardHistory = new MedicalCardHistory();
             
@@ -40,15 +46,13 @@ namespace HospitalPatientRecords.MVVM.View
 
         private void Add_OnClick(object sender, RoutedEventArgs e)
         {
-            AddingPatientWindow addingForm = new AddingPatientWindow();
+            AddingPatientWindow addingForm = new AddingPatientWindow(dbContext);
             addingForm.ShowDialog();
             UpdateDb();
         }
 
         private void Delete_OnClick(object sender, RoutedEventArgs e)
         {
-            dbContext = new AccountantCourseworkContext();
-
             MedicalCardHistory itemDel = patientDataGrid.SelectedItem as MedicalCardHistory;
             
             if (itemDel != null)
@@ -88,21 +92,14 @@ namespace HospitalPatientRecords.MVVM.View
             //db.Patient.Remove();
         }
 
-        private void Diagnosis_OnClick(object sender, RoutedEventArgs e)
+        private void OpenDiagnosisView()
         {
-            dbContext = new AccountantCourseworkContext();
-
             MedicalCardHistory medicalCardHistory = patientDataGrid.SelectedItem as MedicalCardHistory;
             
             if (medicalCardHistory != null)
             {
-                DiagnosisWindow diagnosisWindow = new DiagnosisWindow();
-                diagnosisWindow.IdPatientField.Text = medicalCardHistory.Patient.Id.ToString();
-                diagnosisWindow.FioField.Text = medicalCardHistory.Patient.Fio;
-                diagnosisWindow.AgeField.Text = medicalCardHistory.Patient.Age.ToString();
-                diagnosisWindow.SexField.Text = medicalCardHistory.Patient.Sex;
-                diagnosisWindow.ResidencyField.Text = medicalCardHistory.Patient.Residency;
-                diagnosisWindow.CopyPapersField.Text = medicalCardHistory.Address;
+                DiagnosisWindow diagnosisWindow = new DiagnosisWindow(dbContext, medicalCardHistory);
+                
                 diagnosisWindow.UpdateDiagnosis();
                 diagnosisWindow.ShowDialog();
                 UpdateDb();
@@ -114,38 +111,13 @@ namespace HospitalPatientRecords.MVVM.View
                 mesWin.ShowDialog();
             }
         }
-
-        private void PatientDatabase_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            dbContext = new AccountantCourseworkContext();
-
-            MedicalCardHistory medicalCardHistory = patientDataGrid.SelectedItem as MedicalCardHistory;
-            
-            if (medicalCardHistory != null)
-            {
-                DiagnosisWindow diagnosisWindow = new DiagnosisWindow();
-                diagnosisWindow.IdPatientField.Text = medicalCardHistory.Patient.Id.ToString();
-                diagnosisWindow.FioField.Text = medicalCardHistory.Patient.Fio;
-                diagnosisWindow.AgeField.Text = medicalCardHistory.Patient.Age.ToString();
-                diagnosisWindow.SexField.Text = medicalCardHistory.Patient.Sex;
-                diagnosisWindow.ResidencyField.Text = medicalCardHistory.Patient.Residency;
-                diagnosisWindow.CopyPapersField.Text = medicalCardHistory.Address;
-                diagnosisWindow.UpdateDiagnosis();
-                diagnosisWindow.ShowDialog();
-                UpdateDb();
-            }
-            else
-            {
-                MessageWindow mesWin = new MessageWindow();
-                mesWin.MessageField.Text = "Patient not selected!";
-                mesWin.ShowDialog();
-            }
-        }
+        
+        private void Diagnosis_OnClick(object sender, RoutedEventArgs e) => OpenDiagnosisView();
+        
+        private void PatientDatabase_OnMouseDoubleClick(object sender, MouseButtonEventArgs e) => OpenDiagnosisView();
 
         private void Searcher_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            dbContext = new AccountantCourseworkContext();
-
             var selectedList = dbContext.MedicalCardHistory.Where(checkSearchCriterias()).ToList();
 
             patientDataGrid.ItemsSource = selectedList;
@@ -153,7 +125,7 @@ namespace HospitalPatientRecords.MVVM.View
 
         private Expression<Func<MedicalCardHistory, bool>> checkSearchCriterias()
         {
-            return m => m.Patient.Fio.Contains(Searcher.Text) || m.Patient.Residency.Contains(Searcher.Text);
+            return m => m.Patient.Fio.Contains(Searcher.Text) || m.Patient.Residency.Contains(Searcher.Text) || m.CardNumber.ToString().Contains(Searcher.Text);
         }
     }
 }

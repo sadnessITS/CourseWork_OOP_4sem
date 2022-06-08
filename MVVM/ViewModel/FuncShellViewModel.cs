@@ -9,10 +9,12 @@ namespace HospitalPatientRecords.MVVM.ViewModel
     {
         public RelayCommand PatientCommand { get; set; }
         public RelayCommand AdministrateCommand { get; set; }
+        public RelayCommand ScheduleCommand { get; set; }
         public RelayCommand AboutCommand { get; set; }
 
         public PatientViewModel PatientVM { get; set; }
         public AdministrateViewModel AdministrateVM { get; set; }
+        public ScheduleViewModel ScheduleVM { get; set; }
         public AboutViewModel AboutVM { get; set; }
 
         private object _currentView;
@@ -34,6 +36,7 @@ namespace HospitalPatientRecords.MVVM.ViewModel
         {
             PatientVM = new PatientViewModel();
             AdministrateVM = new AdministrateViewModel();
+            ScheduleVM = new ScheduleViewModel();
             AboutVM = new AboutViewModel();
 
             CurrentView = PatientVM;
@@ -43,14 +46,19 @@ namespace HospitalPatientRecords.MVVM.ViewModel
                 CurrentView = PatientVM;
             });
             
-            AboutCommand = new RelayCommand(o =>
-            {
-                CurrentView = AboutVM;
-            });
-
             AdministrateCommand = new RelayCommand(o =>
             {
                 CurrentView = AdministrateVM;
+            });
+            
+            ScheduleCommand = new RelayCommand(o =>
+            {
+                CurrentView = ScheduleVM;
+            });
+
+            AboutCommand = new RelayCommand(o =>
+            {
+                CurrentView = AboutVM;
             });
         }
     }

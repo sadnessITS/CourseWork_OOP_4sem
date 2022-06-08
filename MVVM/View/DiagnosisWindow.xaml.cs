@@ -13,32 +13,27 @@ namespace HospitalPatientRecords.MVVM.View;
 public partial class DiagnosisWindow : Window
 {
     AccountantCourseworkContext dbContext;
+
+    private MedicalCardHistory medicalCardHistory;
+    
     private List<Diagnosis> _diagnosisList;
-    public DiagnosisWindow()
+    public DiagnosisWindow(AccountantCourseworkContext dbContext, MedicalCardHistory medicalCardHistory)
     {
         InitializeComponent();
+
+        this.dbContext = dbContext;
+        this.medicalCardHistory = medicalCardHistory;
+        
+        CardNumberField.Text = medicalCardHistory.CardNumber.ToString();
+        FioField.Text = medicalCardHistory.Patient.Fio;
+        AgeField.Text = medicalCardHistory.Patient.Age.ToString();
+        SexField.Text = medicalCardHistory.Patient.Sex;
+        ResidencyField.Text = medicalCardHistory.Patient.Residency;
+        CopyPapersField.Text = medicalCardHistory.Address;
     }
     
     public void UpdateDiagnosis()
     {
-        // dbContext = new AccountantCourseworkContext();
-        //
-        // var result = from doctor in dbContext.Doctor
-        //     join diagnosis in dbContext.Diagnosis on doctor.Id equals diagnosis.IdDoctor
-        //     join patient in dbContext.Patient on diagnosis.IdPatient equals patient.Id
-        //     join medicalSpecialization in dbContext.MedicalSpecialization on doctor.IdMedicalSpecialization equals medicalSpecialization.Id
-        //     select new
-        //     { 
-        //         Fio = doctor.Fio, 
-        //         MedicalSpecialization = medicalSpecialization.Name, 
-        //         Diagnosis = diagnosis.DiagnosticResult, 
-        //         Date = diagnosis.Date 
-        //     };
-        // var resultList = result.ToList();
-        // diagnosisDataGrid.ItemsSource = resultList;
-        
-        dbContext = new AccountantCourseworkContext();
-
         List<Diagnosis> selectedDiagnoses = dbContext.Diagnosis.ToList();
             
         foreach (var d in selectedDiagnoses)
@@ -75,18 +70,18 @@ public partial class DiagnosisWindow : Window
     private void Save_OnClick(object sender, RoutedEventArgs e)
     {
         Patient checkPatient = dbContext.Patient
-            .Where(o => o.Id.ToString() == IdPatientField.Text)
+            .Where(o => o.Id == medicalCardHistory.Patient.Id)
             .FirstOrDefault();
-
+    
         if (checkPatient.Fio != FioField.Text || checkPatient.Residency != ResidencyField.Text)
         {
             try
             {
                 checkPatient.Fio = FioField.Text;
                 checkPatient.Residency = ResidencyField.Text;
-
+    
                 dbContext.SaveChanges();
-
+    
                 MessageWindow mesWin = new MessageWindow();
                 mesWin.TitleField.Text = "Congratulations!";
                 mesWin.MessageField.Text = "Info was changed!";
@@ -108,24 +103,17 @@ public partial class DiagnosisWindow : Window
         }
     }
 
-    private void Cancel_OnClick(object sender, RoutedEventArgs e)
-    {
-        this.Close();
-    }
-
     private void AddDiagnosis_Click(object sender, RoutedEventArgs e)
     {
-        int patientId = Convert.ToInt32(IdPatientField.Text);
-        Patient patient = dbContext.Patient.First(patient => patient.Id == patientId);
-        AddingDiagnosisWindow addingDiagnosis = new AddingDiagnosisWindow(patient);
+        int patientId = medicalCardHistory.Patient.Id;
+        
+        AddingDiagnosisWindow addingDiagnosis = new AddingDiagnosisWindow(dbContext, medicalCardHistory.Patient);
         addingDiagnosis.ShowDialog();
         UpdateDiagnosis();
     }
 
     private void DeleteDiagnosis_Click(object sender, RoutedEventArgs e)
     {
-        dbContext = new AccountantCourseworkContext();
-
         try
         {
             Diagnosis itemSelect = diagnosisDataGrid.SelectedItem as Diagnosis;
@@ -142,6 +130,12 @@ public partial class DiagnosisWindow : Window
             mesWin.MessageField.Text = "Something was wrong!";
             mesWin.ShowDialog();
         }
+    }
+    
+    private void CardHistory_OnClick(object sender, RoutedEventArgs e)
+    {
+        CardHistoryView cardHistoryView = new CardHistoryView(dbContext, medicalCardHistory.Patient);
+        cardHistoryView.ShowDialog();
     }
     
     // private void ExpandList(string medicine)
@@ -168,4 +162,5 @@ public partial class DiagnosisWindow : Window
     // private void Surgeon_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Surgeon");
     // private void Therapist_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Therapist");
     // private void Therapist_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Therapist");
+    
 }

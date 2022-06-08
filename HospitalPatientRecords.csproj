@@ -81,9 +81,13 @@
     <Compile Include="Core\RelayCommand.cs" />
     <Compile Include="MVVM\Model\Doctor.cs" />
     <Page Include="MVVM\View\AboutView.xaml" />
+    <Page Include="MVVM\View\AddingEntryWindow.xaml" />
+    <Page Include="MVVM\View\AddingMedicalSpecializationWindow.xaml" />
     <Page Include="MVVM\View\AddingPatientWindow.xaml" />
     <Page Include="MVVM\View\AddingUserWindow.xaml" />
     <Page Include="MVVM\View\AdministrateView.xaml" />
+    <Page Include="MVVM\View\CardHistoryView.xaml" />
+    <Page Include="MVVM\View\MedicalSpecializationView.xaml" />
     <Page Include="MVVM\View\PatientView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -95,6 +99,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MVVM\View\ScheduleView.xaml" />
     <Page Include="Theme\AddingFieldTheme.xaml" />
     <Page Include="Theme\DiagnosisInfoTheme.xaml" />
     <Page Include="Theme\GeneralButtonTheme.xaml" />
@@ -114,8 +119,15 @@
     <Compile Include="MVVM\ViewModel\AdministrateViewModel.cs" />
     <Compile Include="MVVM\ViewModel\PatientViewModel.cs" />
     <Compile Include="MVVM\ViewModel\FuncShellViewModel.cs" />
+    <Compile Include="MVVM\ViewModel\ScheduleViewModel.cs" />
     <Compile Include="MVVM\View\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\View\AddingEntryWindow.xaml.cs">
+      <DependentUpon>AddingEntryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\View\AddingMedicalSpecializationWindow.xaml.cs">
+      <DependentUpon>AddingMedicalSpecializationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\View\AddingPatientWindow.xaml.cs">
       <DependentUpon>AddingPatientWindow.xaml</DependentUpon>
@@ -125,6 +137,12 @@
     </Compile>
     <Compile Include="MVVM\View\AdministrateView.xaml.cs">
       <DependentUpon>AdministrateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\View\CardHistoryView.xaml.cs">
+      <DependentUpon>CardHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\View\MedicalSpecializationView.xaml.cs">
+      <DependentUpon>MedicalSpecializationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\View\PatientView.xaml.cs">
       <DependentUpon>PatientView.xaml</DependentUpon>
@@ -144,6 +162,9 @@
     </Compile>
     <Compile Include="MVVM\View\AddingDiagnosisWindow.xaml.cs">
       <DependentUpon>AddingDiagnosisWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\View\ScheduleView.xaml.cs">
+      <DependentUpon>ScheduleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

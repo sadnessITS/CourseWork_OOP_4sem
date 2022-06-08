@@ -6,7 +6,8 @@ public class VarsDictionary
 {
     public enum Key
     {
-        CURRENT_DOCTOR
+        CURRENT_DOCTOR,
+        DB_CONTEXT
     }
 
     public static Dictionary<Key, object> varsDictionary = new Dictionary<Key, object>();
