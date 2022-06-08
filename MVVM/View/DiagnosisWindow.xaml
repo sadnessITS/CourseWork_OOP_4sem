@@ -289,23 +289,23 @@
                         <GradientStop Color="#001845" Offset="1"/>
                     </LinearGradientBrush>
                 </Border.Background>
-                <DataGrid x:Name="DiagnosisDatabase"
+                <DataGrid x:Name="diagnosisDataGrid"
                           Margin="10"
                           IsReadOnly="False"
                           Style="{StaticResource DatabaseTheme}"
                           CellStyle="{StaticResource CellTheme}"
                           ColumnHeaderStyle="{StaticResource ColumnHeaderTheme}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Doctor's Full Name"
+                        <DataGridTextColumn Header="Doctor's Name"
                                             MinWidth="150"
                                             Width="*"
                                             IsReadOnly="False"
                                             Binding="{Binding Doctor.Fio}"/>
-                        <DataGridTextColumn Header="Medicine"
+                        <DataGridTextColumn Header="Doctor Specialization"
                                             MinWidth="150"
                                             Width="100"
                                             IsReadOnly="True"
-                                            Binding="{Binding Doctor.MedicalSpecialization}"/>
+                                            Binding="{Binding Doctor.MedicalSpecialization.Name}"/>
                         <DataGridTextColumn Header="Diagnosis"
                                             MinWidth="150"
                                             Width="*"
@@ -324,6 +324,7 @@
             <Button x:Name="Save" Click="Save_OnClick" Width="200" Height="40" Content="SAVE" FontSize="13" Margin="0,0,0, 0" Style="{StaticResource GeneralButtonTheme}"/>
             <Button x:Name="Cancel" Click="Cancel_OnClick" Width="200" Height="40" Content="CANCEL" FontSize="13" Margin="30,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
             <Button x:Name="AddDiagnosis" Click="AddDiagnosis_Click" Width="200" Height="40" Content="ADD" FontSize="13" Margin="30,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
+            <Button x:Name="DeleteDiagnosis" Click="DeleteDiagnosis_Click" Width="200" Height="40" Content="DELETE" FontSize="13" Margin="30,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
         </StackPanel>
     </Grid>
 </Window>

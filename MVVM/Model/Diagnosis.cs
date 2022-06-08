@@ -14,9 +14,9 @@ namespace HospitalPatientRecords.MVVM.Model
         [ForeignKey("IdPatient")]
         public Patient Patient { get; set; }
 
-        public int? IdUser { get; set; }
+        public int? IdDoctor { get; set; }
 
-        [ForeignKey("IdUser")]
+        [ForeignKey("IdDoctor")]
         public Doctor Doctor { get; set; }
         
         public string DiagnosticResult  { get; set; }

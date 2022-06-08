@@ -23,8 +23,19 @@ namespace HospitalPatientRecords.MVVM.View
         public void UpdateDb()
         {
             dbContext = new AccountantCourseworkContext();
-            dbContext.Patient.Load();
-            patientDataGrid.ItemsSource = dbContext.Patient.Local.ToBindingList();
+
+            List<MedicalCardHistory> selectedMedicalCardHistories = new List<MedicalCardHistory>();
+            MedicalCardHistory medicalCardHistory = new MedicalCardHistory();
+            
+            foreach (var p in dbContext.Patient.ToList())
+            {
+                medicalCardHistory = dbContext.MedicalCardHistory
+                    .OrderByDescending(history => history.Date)
+                    .FirstOrDefault((history) => history.Patient.Id == p.Id);
+                selectedMedicalCardHistories.Add(medicalCardHistory);
+            }
+
+            patientDataGrid.ItemsSource = selectedMedicalCardHistories;
         }
 
         private void Add_OnClick(object sender, RoutedEventArgs e)
@@ -38,20 +49,28 @@ namespace HospitalPatientRecords.MVVM.View
         {
             dbContext = new AccountantCourseworkContext();
 
-            Patient itemDel = patientDataGrid.SelectedItem as Patient;
+            MedicalCardHistory itemDel = patientDataGrid.SelectedItem as MedicalCardHistory;
             
             if (itemDel != null)
             {
                 Patient patientDel = dbContext.Patient
-                    .Where(o => o.Id == itemDel.Id)
+                    .Where(o => o.Id == itemDel.Patient.Id)
                     .FirstOrDefault();
                 
                 List<Diagnosis> diagnosisDel = dbContext.Diagnosis
-                    .Where(o => o.IdPatient == itemDel.Id).ToList();
+                    .Where(o => o.Patient.Id == itemDel.Id).ToList();
+                
+                List<MedicalCardHistory> medicalCardDel = dbContext.MedicalCardHistory
+                    .Where(o => o.Patient.Id == itemDel.Id).ToList();
 
                 foreach (var d in diagnosisDel)
                 {
                     dbContext.Diagnosis.Remove(d);
+                }
+                
+                foreach (var m in medicalCardDel)
+                {
+                    dbContext.MedicalCardHistory.Remove(m);
                 }
 
                 dbContext.Patient.Remove(patientDel);
@@ -73,20 +92,16 @@ namespace HospitalPatientRecords.MVVM.View
         {
             dbContext = new AccountantCourseworkContext();
 
-            Patient patient = patientDataGrid.SelectedItem as Patient;
-
-            MedicalCardHistory medicalCardHistory = dbContext.MedicalCardHistory
-                .OrderByDescending(history => history.Date)
-                .FirstOrDefault((history) => history.Patient == patient);
-
-            if (patient != null)
+            MedicalCardHistory medicalCardHistory = patientDataGrid.SelectedItem as MedicalCardHistory;
+            
+            if (medicalCardHistory != null)
             {
                 DiagnosisWindow diagnosisWindow = new DiagnosisWindow();
-                diagnosisWindow.IdPatientField.Text = Convert.ToString(patient.Id);
-                diagnosisWindow.FioField.Text = patient.Fio;
-                diagnosisWindow.AgeField.Text = Convert.ToString(patient.Age);
-                diagnosisWindow.SexField.Text = patient.Sex;
-                diagnosisWindow.ResidencyField.Text = patient.Residency;
+                diagnosisWindow.IdPatientField.Text = medicalCardHistory.Patient.Id.ToString();
+                diagnosisWindow.FioField.Text = medicalCardHistory.Patient.Fio;
+                diagnosisWindow.AgeField.Text = medicalCardHistory.Patient.Age.ToString();
+                diagnosisWindow.SexField.Text = medicalCardHistory.Patient.Sex;
+                diagnosisWindow.ResidencyField.Text = medicalCardHistory.Patient.Residency;
                 diagnosisWindow.CopyPapersField.Text = medicalCardHistory.Address;
                 diagnosisWindow.UpdateDiagnosis();
                 diagnosisWindow.ShowDialog();
@@ -104,20 +119,16 @@ namespace HospitalPatientRecords.MVVM.View
         {
             dbContext = new AccountantCourseworkContext();
 
-            Patient patient = patientDataGrid.SelectedItem as Patient;
-
-            MedicalCardHistory medicalCardHistory = dbContext.MedicalCardHistory
-                .OrderByDescending(history => history.Date)
-                .FirstOrDefault((history) => history.Patient == patient);
-
-            if (patient != null)
+            MedicalCardHistory medicalCardHistory = patientDataGrid.SelectedItem as MedicalCardHistory;
+            
+            if (medicalCardHistory != null)
             {
                 DiagnosisWindow diagnosisWindow = new DiagnosisWindow();
-                diagnosisWindow.IdPatientField.Text = Convert.ToString(patient.Id);
-                diagnosisWindow.FioField.Text = patient.Fio;
-                diagnosisWindow.AgeField.Text = Convert.ToString(patient.Age);
-                diagnosisWindow.SexField.Text = patient.Sex;
-                diagnosisWindow.ResidencyField.Text = patient.Residency;
+                diagnosisWindow.IdPatientField.Text = medicalCardHistory.Patient.Id.ToString();
+                diagnosisWindow.FioField.Text = medicalCardHistory.Patient.Fio;
+                diagnosisWindow.AgeField.Text = medicalCardHistory.Patient.Age.ToString();
+                diagnosisWindow.SexField.Text = medicalCardHistory.Patient.Sex;
+                diagnosisWindow.ResidencyField.Text = medicalCardHistory.Patient.Residency;
                 diagnosisWindow.CopyPapersField.Text = medicalCardHistory.Address;
                 diagnosisWindow.UpdateDiagnosis();
                 diagnosisWindow.ShowDialog();
@@ -135,14 +146,14 @@ namespace HospitalPatientRecords.MVVM.View
         {
             dbContext = new AccountantCourseworkContext();
 
-            var selectedList = dbContext.Patient.Where(checkSearchCriterias()).ToList();
+            var selectedList = dbContext.MedicalCardHistory.Where(checkSearchCriterias()).ToList();
 
             patientDataGrid.ItemsSource = selectedList;
         }
 
-        private Expression<Func<Patient, bool>> checkSearchCriterias()
+        private Expression<Func<MedicalCardHistory, bool>> checkSearchCriterias()
         {
-            return p => p.Fio.Contains(Searcher.Text) || p.Residency.Contains(Searcher.Text);
+            return m => m.Patient.Fio.Contains(Searcher.Text) || m.Patient.Residency.Contains(Searcher.Text);
         }
     }
 }

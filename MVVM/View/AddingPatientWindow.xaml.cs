@@ -20,11 +20,33 @@ namespace HospitalPatientRecords.MVVM.View
             InitializeComponent();
         }
         
-        bool Validate(Patient patient)
+        bool ValidatePatient(Patient patient)
         {
             var results = new List<ValidationResult>();
             var context = new ValidationContext(patient);
             if (!Validator.TryValidateObject(patient, context, results, true))
+            {
+                MessageWindow mesWin = new MessageWindow();
+                
+                string errors = "";
+                foreach (var error in results)
+                {
+                    errors += error.ErrorMessage; errors += "\n";
+                }
+
+                errors = errors.Substring(0, errors.Length - 2);
+                mesWin.Height += 13 * results.Count;
+                mesWin.MessageField.Text = errors;
+                mesWin.ShowDialog();
+                return false;
+            }
+            else return true;
+        }
+        bool ValidateMedicalCardHistory(MedicalCardHistory medicalCardHistory)
+        {
+            var results = new List<ValidationResult>();
+            var context = new ValidationContext(medicalCardHistory);
+            if (!Validator.TryValidateObject(medicalCardHistory, context, results, true))
             {
                 MessageWindow mesWin = new MessageWindow();
                 
@@ -62,7 +84,6 @@ namespace HospitalPatientRecords.MVVM.View
             {
 
                 Patient patient = new Patient();
-                patient.Id = Convert.ToInt32(IdPatient.Text);
                 patient.Fio = Fio.Text;
                 patient.Age = Convert.ToInt32(Age.Text);
                 patient.Sex = sex;
@@ -70,15 +91,18 @@ namespace HospitalPatientRecords.MVVM.View
 
                 MedicalCardHistory medicalCardHistory = new MedicalCardHistory()
                 {
+                    CardNumber = Convert.ToInt32(cardNumber.Text),
                     Address = medicalCardAddressTextBox.Text,
                     Date = DateTime.Now,
                     ActionWithCard = "Registered",
                     Patient = patient
                 };
                 
-                if (Validate(patient) == false) return;
+                if (ValidatePatient(patient) == false) return;
+                if (ValidateMedicalCardHistory(medicalCardHistory) == false) return;
 
                 dbContext.Patient.Add(patient);
+                dbContext.MedicalCardHistory.Add(medicalCardHistory);
                 dbContext.SaveChanges();
             
                 MessageWindow mesWin = new MessageWindow();

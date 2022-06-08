@@ -1,5 +1,7 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Windows;
 using System.Windows.Input;
 using System.Linq;
@@ -19,27 +21,37 @@ public partial class DiagnosisWindow : Window
     
     public void UpdateDiagnosis()
     {
+        // dbContext = new AccountantCourseworkContext();
+        //
+        // var result = from doctor in dbContext.Doctor
+        //     join diagnosis in dbContext.Diagnosis on doctor.Id equals diagnosis.IdDoctor
+        //     join patient in dbContext.Patient on diagnosis.IdPatient equals patient.Id
+        //     join medicalSpecialization in dbContext.MedicalSpecialization on doctor.IdMedicalSpecialization equals medicalSpecialization.Id
+        //     select new
+        //     { 
+        //         Fio = doctor.Fio, 
+        //         MedicalSpecialization = medicalSpecialization.Name, 
+        //         Diagnosis = diagnosis.DiagnosticResult, 
+        //         Date = diagnosis.Date 
+        //     };
+        // var resultList = result.ToList();
+        // diagnosisDataGrid.ItemsSource = resultList;
+        
         dbContext = new AccountantCourseworkContext();
-        int idPatient = Convert.ToInt32(IdPatientField.Text);
 
-        //var combinedList = dbContext.Diagnosis.Where(d => d.Patient.Id == idPatient).Join(dbContext.Doctor,
-        //    u => u.IdUser,
-        //    c => c.Id,
-        //    (u, c) => new
-        //    {
-        //        IdVisiting = u.IdDiagnosisVisiting,
-        //        IdPatient = u.IdPatient,
-        //        IdUser = c.Id,
-        //        DoctorFio = c.Fio,
-        //        Medicine = u.MedicalSpecialization,
-        //        Diagnosis1 = u.Diagnosis1,
-        //        Date = u.Date
-        //    }).ToList();
+        List<Diagnosis> selectedDiagnoses = dbContext.Diagnosis.ToList();
+            
+        foreach (var d in selectedDiagnoses)
+        {
+            d.Doctor = dbContext.Doctor.Where(item => item.Id == d.IdDoctor).FirstOrDefault();
 
-        var listDiagnosisDataGrid = dbContext.Diagnosis.ToList();
-
-        DiagnosisDatabase.ItemsSource = listDiagnosisDataGrid;
-
+            foreach (var dm in selectedDiagnoses)
+            {
+                dm.Doctor.MedicalSpecialization = dbContext.MedicalSpecialization.Where(item => item.Id == dm.Doctor.IdMedicalSpecialization).FirstOrDefault();
+            }
+        }
+        
+        diagnosisDataGrid.ItemsSource = selectedDiagnoses;
     } 
     
     private void DrugWindow(object sender, MouseButtonEventArgs e)
@@ -63,7 +75,7 @@ public partial class DiagnosisWindow : Window
     private void Save_OnClick(object sender, RoutedEventArgs e)
     {
         Patient checkPatient = dbContext.Patient
-            .Where(o => o.Id == Convert.ToInt32(IdPatientField.Text))
+            .Where(o => o.Id.ToString() == IdPatientField.Text)
             .FirstOrDefault();
 
         if (checkPatient.Fio != FioField.Text || checkPatient.Residency != ResidencyField.Text)
@@ -105,11 +117,33 @@ public partial class DiagnosisWindow : Window
     {
         int patientId = Convert.ToInt32(IdPatientField.Text);
         Patient patient = dbContext.Patient.First(patient => patient.Id == patientId);
-        AddingDiagnosisWindow addingDiagnosis = new AddingDiagnosisWindow(dbContext, patient);
+        AddingDiagnosisWindow addingDiagnosis = new AddingDiagnosisWindow(patient);
         addingDiagnosis.ShowDialog();
         UpdateDiagnosis();
     }
 
+    private void DeleteDiagnosis_Click(object sender, RoutedEventArgs e)
+    {
+        dbContext = new AccountantCourseworkContext();
+
+        try
+        {
+            Diagnosis itemSelect = diagnosisDataGrid.SelectedItem as Diagnosis;
+            var remove = dbContext.Diagnosis.Where(d => d.Id == itemSelect.Id).FirstOrDefault();
+
+            dbContext.Diagnosis.Remove(remove);
+            dbContext.SaveChanges();
+        
+            UpdateDiagnosis();
+        }
+        catch
+        {
+            MessageWindow mesWin = new MessageWindow();
+            mesWin.MessageField.Text = "Something was wrong!";
+            mesWin.ShowDialog();
+        }
+    }
+    
     // private void ExpandList(string medicine)
     // {
     //     int idPatient = Convert.ToInt32(IdPatientField.Text);

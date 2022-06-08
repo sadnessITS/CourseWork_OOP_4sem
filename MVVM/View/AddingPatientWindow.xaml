@@ -78,7 +78,7 @@
         <StackPanel Grid.Row="2">
             <StackPanel Orientation="Horizontal">
                 <Grid Margin="63,30,0,0">
-                    <TextBox x:Name="IdPatient"
+                    <TextBox x:Name="cardNumber"
                              Style="{StaticResource AddingFieldTheme}"
                              Height="25"/>
                     <TextBox Text="Personal Number"
@@ -99,7 +99,7 @@
                         <TextBox.Style>
                             <Style TargetType="TextBox">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=IdPatient}" Value="">
+                                    <DataTrigger Binding="{Binding Text, ElementName=cardNumber}" Value="">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -271,7 +271,7 @@
                         <TextBox.Style>
                             <Style TargetType="TextBox">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=CopyPapers}" Value="">
+                                    <DataTrigger Binding="{Binding Text, ElementName=medicalCardAddressTextBox}" Value="">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>

@@ -14,15 +14,14 @@ namespace HospitalPatientRecords.MVVM.View
     /// </summary>
     public partial class AddingDiagnosisWindow : Window
     {
-        private AccountantCourseworkContext db;
+        private AccountantCourseworkContext dbContext;
         
         private Patient patient { get; set; }
 
-        public AddingDiagnosisWindow(AccountantCourseworkContext dbContext, Patient patient)
+        public AddingDiagnosisWindow(Patient patient)
         {
             InitializeComponent();
             this.patient = patient;
-            db = dbContext;
         }
         
         private void DrugWindow(object sender, MouseButtonEventArgs e)
@@ -43,32 +42,10 @@ namespace HospitalPatientRecords.MVVM.View
             this.Close();
         }
         
-        bool Validate(Diagnosis diagnosis)
-        {
-            var results = new List<ValidationResult>();
-            var context = new ValidationContext(diagnosis);
-            if (!Validator.TryValidateObject(diagnosis, context, results, true))
-            {
-                MessageWindow mesWin = new MessageWindow();
-                
-                string errors = "";
-                foreach (var error in results)
-                {
-                    errors += error.ErrorMessage; errors += "\n";
-                }
-
-                errors = errors.Substring(0, errors.Length - 2);
-                mesWin.Height += 13 * results.Count;
-                mesWin.MessageField.Text = errors;
-                mesWin.ShowDialog();
-                return false;
-            }
-            else return true;
-        }
         private void Save_OnClick(object sender, RoutedEventArgs e)
         {
-            db = new AccountantCourseworkContext();
-            List<Diagnosis> listDiagnosis = db.Diagnosis.ToList();
+            dbContext = new AccountantCourseworkContext();
+            List<Diagnosis> listDiagnosis = dbContext.Diagnosis.ToList();
 
             object currentDoctorObject;
             if (!VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.Key.CURRENT_DOCTOR, out currentDoctorObject))
@@ -78,32 +55,35 @@ namespace HospitalPatientRecords.MVVM.View
                 mesWin.ShowDialog();
                 return;
             }
-
             Doctor currentDoctor = (Doctor)currentDoctorObject;
 
-            Doctor checkUser = db.Doctor
+            Doctor checkDoctor = dbContext.Doctor
                 .Where(o => o.Id == currentDoctor.Id)
                 .FirstOrDefault();
 
+            Patient checkPatient = dbContext.Patient
+                .Where(p => p.Id == patient.Id)
+                .FirstOrDefault();
+            
+            Diagnosis diagnosis = new Diagnosis();
+            diagnosis.Patient = checkPatient;
+            diagnosis.Doctor = checkDoctor;
+            diagnosis.DiagnosticResult = DiagnosisTextBox.Text;
+            diagnosis.Date = DateTime.Now;
+
+            dbContext.Diagnosis.Add(diagnosis);
+            
+            dbContext.SaveChanges();
+            
+            MessageWindow mesWin2 = new MessageWindow();
+            mesWin2.TitleField.Text = "Congratulations!";
+            mesWin2.MessageField.Text = "Diagnosis was added!";
+            mesWin2.ShowDialog();
+            this.Close();
+
             try
             {
-                Diagnosis diagnosis = new Diagnosis();
-                diagnosis.Id = (listDiagnosis.Count + 1);
-                diagnosis.Patient = patient;
-                diagnosis.Doctor = currentDoctor;
-                diagnosis.DiagnosticResult = DiagnosisTextBox.Text;
-                diagnosis.Date = DateTime.Now;
                 
-                if (Validate(diagnosis) == false) return;
-
-                db.Diagnosis.Add(diagnosis);
-                db.SaveChanges();
-            
-                MessageWindow mesWin = new MessageWindow();
-                mesWin.TitleField.Text = "Congratulations!";
-                mesWin.MessageField.Text = "Diagnosis was added!";
-                mesWin.ShowDialog();
-                this.Close();
             }
             catch
             {

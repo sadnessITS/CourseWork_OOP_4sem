@@ -85,30 +85,30 @@
                       CellStyle="{StaticResource CellTheme}"
                       ColumnHeaderStyle="{StaticResource ColumnHeaderTheme}">
             <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID Card"
+                    <DataGridTextColumn Header="Card Number"
                                         MinWidth="150"
                                         Width="*"
-                                        Binding="{Binding IdPatient}"/>
+                                        Binding="{Binding CardNumber}"/>
                     <DataGridTextColumn Header="Full Name"
                                         MinWidth="150"
                                         Width="*"
-                                        Binding="{Binding Fio}"/>
+                                        Binding="{Binding Patient.Fio}"/>
                     <DataGridTextColumn Header="Age"
                                         MinWidth="150"
                                         Width="*"
-                                        Binding="{Binding Age}"/>
+                                        Binding="{Binding Patient.Age}"/>
                     <DataGridTextColumn Header="Sex"
                                         MinWidth="150"
                                         Width="*"
-                                        Binding="{Binding Sex}"/>
+                                        Binding="{Binding Patient.Sex}"/>
                     <DataGridTextColumn Header="Residency"
                                         MinWidth="150"
                                         Width="*"
-                                        Binding="{Binding Residency}"/>
-                    <DataGridTextColumn Header="Copy Papers"
+                                        Binding="{Binding Patient.Residency}"/>
+                    <DataGridTextColumn Header="Papers Location"
                                         MinWidth="150"
                                         Width="*"
-                                        Binding="{Binding CopyPapers}"/>
+                                        Binding="{Binding Address}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

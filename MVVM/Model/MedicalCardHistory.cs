@@ -9,12 +9,16 @@ namespace HospitalPatientRecords.MVVM.Model
         [Key]
         public int Id { get; set; }
 
+        [Id]
+        public int CardNumber { get; set; }
+
         public int? IdPatient { get; set; }
 
         [Required]
         [ForeignKey("IdPatient")]
         public Patient Patient { get; set; }
 
+        [Address]
         public string Address{ get; set; }
 
         public DateTime Date { get; set; }

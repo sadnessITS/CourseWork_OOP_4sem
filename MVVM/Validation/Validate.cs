@@ -58,7 +58,7 @@ namespace HospitalPatientRecords.MVVM.Model
             return false;
         }
     }
-    class CopyPapersAttribute : ValidationAttribute
+    class AddressAttribute : ValidationAttribute
     {
         Regex regex = new Regex(@"[a-zA-Zа-яА-Я]");
         public override bool IsValid(object? value)

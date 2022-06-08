@@ -61,7 +61,6 @@ namespace HospitalPatientRecords.MVVM.View
             try
             {
                 Doctor user = new Doctor();
-                user.Id = (list.Count + 1);
                 user.Login = LoginField.Text;
                 user.Password = hash;
                 user.Fio = DoctorFio.Text;

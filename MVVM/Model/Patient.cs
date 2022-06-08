@@ -4,7 +4,6 @@ namespace HospitalPatientRecords.MVVM.Model
 {
     public class Patient
     {
-        [Id]
         [Key]
         public int Id { get; set; }
 
