@@ -72,6 +72,8 @@ public partial class AddingEntryWindow : Window
             return;
         }
 
+        newAppointment.AppointmentTime = meetingDate.SelectedDate.Value;
+
         if (newAppointment.AppointmentTime < DateTime.Now)
         {
             MessageWindow mesWin = new MessageWindow();
@@ -79,8 +81,6 @@ public partial class AddingEntryWindow : Window
             mesWin.ShowDialog();
             return;
         }
-
-        newAppointment.AppointmentTime = meetingDate.SelectedDate.Value;
 
         object patientObject;
 
@@ -99,7 +99,26 @@ public partial class AddingEntryWindow : Window
             return;
         }
 
-        dbContext.Appointment.Add(newAppointment);
+        newAppointment = dbContext.Appointment.Add(newAppointment);
+
+        object doctorObject;
+
+        var medicalCard = dbContext.MedicalCardHistory.FirstOrDefault(item => item.IdPatient == newAppointment.IdPatient);
+
+        VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.Key.CURRENT_DOCTOR, out doctorObject);
+
+        Doctor currentDoctor = doctorObject as Doctor;
+
+        MedicalCardHistory medicalCardHistory = new MedicalCardHistory()
+        {
+            CardNumber = medicalCard.CardNumber,
+            Address = "[Replaced:] " + currentDoctor.Fio,
+            Date = DateTime.Now,
+            ActionWithCard = "Replaced to doctor",
+            Patient = newAppointment.Patient
+        };
+        
+        dbContext.MedicalCardHistory.Add(medicalCardHistory);
         dbContext.SaveChanges();
         Close();
     }

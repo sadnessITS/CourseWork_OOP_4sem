@@ -234,53 +234,48 @@
             </StackPanel>
         </StackPanel>
         <Grid Grid.Row="3">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <CheckBox x:Name="DentistCheckBox" Margin="0,2,5,0"
-                          IsChecked="True"/>
-                <TextBox Text="Dentist"
-                         Background="Transparent"
-                         BorderThickness="0"
-                         Foreground="White"
-                         FontWeight="Regular"
-                         FontFamily="Helvetica"
-                         FontSize="18"/>
-                <CheckBox x:Name="ENT" Margin="40,2,5,0"
-                          IsChecked="True"/>
-                <TextBox Text="ENT"
-                         Background="Transparent"
-                         BorderThickness="0"
-                         Foreground="White"
-                         FontWeight="Regular"
-                         FontFamily="Helvetica"
-                         FontSize="18"/>
-                <CheckBox x:Name="Psychiatrist" Margin="36,2,5,0"
-                          IsChecked="True"/>
-                <TextBox Text="Psychiatrist"
-                         Background="Transparent"
-                         BorderThickness="0"
-                         Foreground="White"
-                         FontWeight="Regular"
-                         FontFamily="Helvetica"
-                         FontSize="18"/>
-                <CheckBox x:Name="Surgeon" Margin="28,2,5,0"
-                          IsChecked="True"/>
-                <TextBox Text="Surgeon"
-                         Background="Transparent"
-                         BorderThickness="0"
-                         Foreground="White"
-                         FontWeight="Regular"
-                         FontFamily="Helvetica"
-                         FontSize="18"/>
-                <CheckBox x:Name="Therapist" Margin="33,2,5,0"
-                          IsChecked="True"/>
-                <TextBox Text="Therapist"
-                         Background="Transparent"
-                         BorderThickness="0"
-                         Foreground="White"
-                         FontWeight="Regular"
-                         FontFamily="Helvetica"
-                         FontSize="18"/>
-            </StackPanel>
+            <Grid Grid.Row="0" Grid.Column="0" Name="Toolbar">
+                <StackPanel Orientation="Horizontal">
+                    <Border CornerRadius="10"
+                        Background="#023e7d"
+                        Width="300" Height="40"
+                        Margin="30,0,0,10">
+                        <Grid>
+                            <Rectangle StrokeThickness="1"/>
+                            <TextBox Margin="1"
+                                 x:Name="Searcher"
+                                 TextChanged="Searcher_OnTextChanged"
+                                 FontFamily="Ubuntu"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 VerticalAlignment="Center"
+                                 Padding="5"
+                                 Foreground="White"/>
+                            <TextBox IsHitTestVisible="False"
+                                 Text="Search"
+                                 FontFamily="Ubuntu"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Left"
+                                 Margin="10,0,0,0"
+                                 FontSize="11"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 Foreground="DarkGray">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, ElementName=Searcher}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Grid>
             <Border  CornerRadius="10" Margin="50,30,50,30">
                 <Border.Background>
                     <LinearGradientBrush>

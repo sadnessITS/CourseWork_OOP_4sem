@@ -35,6 +35,7 @@ namespace HospitalPatientRecords.MVVM.View
         {
             Patient selectedPatient = patientDataGrid.SelectedItem as Patient;
 
+            VarsDictionary.varsDictionary.Remove(VarsDictionary.Key.SELECTED_IN_SEARCH_PATIENT);
             VarsDictionary.varsDictionary.Add(VarsDictionary.Key.SELECTED_IN_SEARCH_PATIENT, selectedPatient);
 
             Close();
