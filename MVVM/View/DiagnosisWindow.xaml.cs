@@ -1,7 +1,4 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Linq;
@@ -15,8 +12,7 @@ public partial class DiagnosisWindow : Window
     AccountantCourseworkContext dbContext;
 
     private MedicalCardHistory medicalCardHistory;
-    
-    private List<Diagnosis> _diagnosisList;
+
     public DiagnosisWindow(AccountantCourseworkContext dbContext, MedicalCardHistory medicalCardHistory)
     {
         InitializeComponent();
@@ -28,7 +24,7 @@ public partial class DiagnosisWindow : Window
         FioField.Text = medicalCardHistory.Patient.Fio;
         AgeField.Text = medicalCardHistory.Patient.Age.ToString();
         SexField.Text = medicalCardHistory.Patient.Sex;
-        ResidencyField.Text = medicalCardHistory.Patient.Residency;
+        AddressField.Text = medicalCardHistory.Patient.Address;
         CopyPapersField.Text = medicalCardHistory.Address;
     }
     
@@ -73,12 +69,12 @@ public partial class DiagnosisWindow : Window
             .Where(o => o.Id == medicalCardHistory.Patient.Id)
             .FirstOrDefault();
     
-        if (checkPatient.Fio != FioField.Text || checkPatient.Residency != ResidencyField.Text)
+        if (checkPatient.Fio != FioField.Text || checkPatient.Address != AddressField.Text)
         {
             try
             {
                 checkPatient.Fio = FioField.Text;
-                checkPatient.Residency = ResidencyField.Text;
+                checkPatient.Address = AddressField.Text;
     
                 dbContext.SaveChanges();
     
@@ -104,9 +100,7 @@ public partial class DiagnosisWindow : Window
     }
 
     private void AddDiagnosis_Click(object sender, RoutedEventArgs e)
-    {
-        int patientId = medicalCardHistory.Patient.Id;
-        
+    {   
         AddingDiagnosisWindow addingDiagnosis = new AddingDiagnosisWindow(dbContext, medicalCardHistory.Patient);
         addingDiagnosis.ShowDialog();
         UpdateDiagnosis();

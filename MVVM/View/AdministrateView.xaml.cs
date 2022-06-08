@@ -82,11 +82,6 @@ namespace HospitalPatientRecords.MVVM.View
             }
         }
         
-        private void Edit_OnClick(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         private void Searcher_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             var selectedList = dbContext.Doctor.Where(checkSearchCriterias()).ToList();

@@ -86,7 +86,7 @@ namespace HospitalPatientRecords.MVVM.View
                 patient.Fio = Fio.Text;
                 patient.Age = Convert.ToInt32(Age.Text);
                 patient.Sex = sex;
-                patient.Residency = Residency.Text;
+                patient.Address = Address.Text;
 
                 MedicalCardHistory medicalCardHistory = new MedicalCardHistory()
                 {

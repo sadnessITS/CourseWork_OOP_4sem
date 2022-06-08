@@ -7,12 +7,6 @@ namespace HospitalPatientRecords.MVVM.ViewModel
     {
         public AccountantCourseworkContext() : base("name = AccountantCourseworkEntities") { }
         
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer(@"Server=(DESKTOP-5R6G6IU);Database=AccountantCoursework;Trusted_Connection=True;");
-        //}
-
-
         public DbSet<Diagnosis> Diagnosis { get; set; }
 
         public DbSet<Doctor> Doctor { get; set; }
@@ -24,5 +18,7 @@ namespace HospitalPatientRecords.MVVM.ViewModel
         public DbSet<Patient> Patient { get; set; }
 
         public DbSet<DoctorVisitsFrequency> DoctorVisitsFrequency { get; set; }
+
+        public DbSet<Appointment> Appointment { get; set; }
     }
 }

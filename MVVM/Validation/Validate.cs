@@ -47,24 +47,13 @@ namespace HospitalPatientRecords.MVVM.Model
             return false;
         }
     }
-    class ResidencyAttribute : ValidationAttribute
-    {
-        Regex regex = new Regex(@"[a-zA-Zа-яА-Я]");
-        public override bool IsValid(object? value)
-        {
-            if (regex.IsMatch(value.ToString())) return true;
-            else ErrorMessage = "Residency is wrong!!!";
-            
-            return false;
-        }
-    }
     class AddressAttribute : ValidationAttribute
     {
         Regex regex = new Regex(@"[a-zA-Zа-яА-Я]");
         public override bool IsValid(object? value)
         {
             if (regex.IsMatch(value.ToString())) return true;
-            else ErrorMessage = "Papers destination is wrong!!!";
+            else ErrorMessage = "Address is wrong!!!";
             
             return false;
         }

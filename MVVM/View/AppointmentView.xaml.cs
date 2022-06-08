@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows;
@@ -14,16 +15,28 @@ public partial class ScheduleView : UserControl
     public ScheduleView()
     {
         InitializeComponent();
-        
+
         object db;
 
         VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.Key.DB_CONTEXT, out db);
 
         dbContext = db as AccountantCourseworkContext;
-            
-        //UpdateDb();
+
+        UpdateDb();
     }
-    
+
+    private void UpdateDb()
+    {
+        List<Appointment> selectedAppointment = dbContext.Appointment.ToList();
+
+        foreach (var s in selectedAppointment)
+        {
+            s.Patient = dbContext.Patient.Where(item => item.Id == s.IdPatient).FirstOrDefault();
+        }
+
+        scheduleDataGrid.ItemsSource = selectedAppointment;
+    }
+
     private void Searcher_OnTextChanged(object sender, TextChangedEventArgs e)
     {
         var selectedList = dbContext.Doctor.Where(checkSearchCriterias()).ToList();
@@ -39,11 +52,24 @@ public partial class ScheduleView : UserControl
     private void Add_OnClick(object sender, RoutedEventArgs e)
     {
         new AddingEntryWindow(dbContext).ShowDialog();
-        //UpdateMedicalSpecialization();
+        UpdateDb();
     }
 
     private void Delete_OnClick(object sender, RoutedEventArgs e)
     {
-        throw new NotImplementedException();
+        Appointment selectedAppointment = scheduleDataGrid.SelectedItem as Appointment;
+
+        if (selectedAppointment == null)
+        {
+            MessageWindow mesWin = new MessageWindow();
+            mesWin.MessageField.Text = "Select appointment!";
+            mesWin.ShowDialog();
+            return;
+        }
+
+        dbContext.Appointment.Remove(selectedAppointment);
+        dbContext.SaveChanges();
+
+        UpdateDb();
     }
 }

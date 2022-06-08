@@ -15,7 +15,9 @@ namespace HospitalPatientRecords.MVVM.Model
 
         public string Sex { get; set; }
 
-        [Residency]
-        public string Residency { get; set; }
+        [Address]
+        public string Address { get; set; }
+
+        public string email { get; set; }
     }
 }

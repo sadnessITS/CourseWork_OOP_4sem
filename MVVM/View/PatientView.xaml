@@ -101,10 +101,10 @@
                                         MinWidth="150"
                                         Width="*"
                                         Binding="{Binding Patient.Sex}"/>
-                    <DataGridTextColumn Header="Residency"
+                    <DataGridTextColumn Header="Address"
                                         MinWidth="150"
                                         Width="*"
-                                        Binding="{Binding Patient.Residency}"/>
+                                        Binding="{Binding Patient.Address}"/>
                     <DataGridTextColumn Header="Papers Location"
                                         MinWidth="150"
                                         Width="*"

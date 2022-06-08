@@ -65,7 +65,7 @@
         <Grid Grid.Row="1">
             <StackPanel Name="Logo" Background="Transparent" Orientation="Horizontal" MouseDown="DrugWindow" HorizontalAlignment="Center">
                 <Image Source="../../Source/Image/hospital-logo.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <TextBlock Text="Adding Patient"
+                <TextBlock Text="Adding Appointment"
                            FontWeight="Medium"
                            FontFamily="Helvetica"
                            FontSize="21"
@@ -81,32 +81,16 @@
                     <TextBox x:Name="FioField"
                              Style="{StaticResource AddingFieldTheme}"
                              Height="25"/>
-                    <TextBox Text="Full Name"
-                             IsHitTestVisible="False"
+                    <Button x:Name="searchPatient"
+                             Content="Select patient"
                              FontFamily="Helvetica"
                              FontWeight="Light"
                              FontSize="20"
                              HorizontalAlignment="Center"
-                             Foreground="White"
-                             Background="Transparent"
-                             BorderThickness="0"
                              Width="250"
                              HorizontalContentAlignment="Left"
-                             Focusable="False"
                              Cursor="Arrow"
-                             IsReadOnly="True"
-                             Opacity="0.5">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=FioField}" Value="">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                                <Setter Property="Visibility" Value="Hidden"/>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
+                             Click="searchPatient_Click"/>
                     <iconPacks:PackIconFontAwesome Kind="UserRegular" 
                                                    VerticalAlignment="Center" 
                                                    HorizontalAlignment="Right" 
@@ -119,45 +103,6 @@
                     Height="2"
                     Background="White"
                     Opacity="0.5"/>
-            <StackPanel Orientation="Horizontal">
-                <Grid Margin="63,30,0,0">
-                    <TextBox x:Name="AnamnesisField"
-                             Style="{StaticResource AddingFieldTheme}"
-                             Height="25"/>
-                    <TextBox Text="Anamnesis"
-                             IsHitTestVisible="False"
-                             FontFamily="Helvetica"
-                             FontWeight="Light"
-                             FontSize="20"
-                             HorizontalAlignment="Center"
-                             Foreground="White"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             Width="250"
-                             HorizontalContentAlignment="Left"
-                             Focusable="False"
-                             Cursor="Arrow"
-                             IsReadOnly="True"
-                             Opacity="0.5">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=AnamnesisField}" Value="">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                                <Setter Property="Visibility" Value="Hidden"/>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-                    <iconPacks:PackIconFontAwesome Kind="BookMedicalSolid" 
-                                                   VerticalAlignment="Center" 
-                                                   HorizontalAlignment="Right" 
-                                                   Foreground="White"
-                                                   Focusable="False"
-                                                   Cursor="Arrow"/>
-                </Grid>
-            </StackPanel>
             <Border Width="250"
                     Height="2"
                     Background="White"
@@ -179,7 +124,7 @@
                     Background="White"
                     Opacity="0.5"/>
             <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
-                <Button x:Name="Add" Width="230" Height="40" Content="ADD" FontSize="13" Margin="70,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
+                <Button x:Name="Add" Click="Add_Click"  Width="230" Height="40" Content="ADD" FontSize="13" Margin="70,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
             </StackPanel>
         </StackPanel>
     </Grid>

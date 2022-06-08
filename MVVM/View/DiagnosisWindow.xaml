@@ -188,8 +188,8 @@
                         Background="White"
                         Opacity="0.5"/>
                 <StackPanel Orientation="Horizontal" Margin="50,30,0,0">
-                    <TextBox x:Name="LabelResidency"
-                             Text="Residency:"
+                    <TextBox x:Name="LabelAddress"
+                             Text="Address:"
                              Style="{StaticResource DiagnosisInfoTheme}"
                              FontWeight="Normal"
                              Width="170"
@@ -197,7 +197,7 @@
                              IsReadOnly="True"
                              Cursor="Arrow"
                              Height="25"/>
-                    <TextBox x:Name="ResidencyField"
+                    <TextBox x:Name="AddressField"
                              Text="629720"
                              Width="180"
                              Style="{StaticResource DiagnosisInfoTheme}"
@@ -291,6 +291,7 @@
                 </Border.Background>
                 <DataGrid x:Name="diagnosisDataGrid"
                           Margin="10"
+                          CanUserAddRows="False"
                           IsReadOnly="False"
                           Style="{StaticResource DatabaseTheme}"
                           CellStyle="{StaticResource CellTheme}"

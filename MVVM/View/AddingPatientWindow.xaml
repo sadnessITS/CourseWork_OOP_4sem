@@ -207,10 +207,10 @@
                     Opacity="0.5"/>
             <StackPanel Orientation="Horizontal">
                 <Grid Margin="63,30,0,0">
-                    <TextBox x:Name="Residency"
+                    <TextBox x:Name="Address"
                              Style="{StaticResource AddingFieldTheme}"
                              Height="25"/>
-                    <TextBox Text="Residency"
+                    <TextBox Text="Address"
                              IsHitTestVisible="False"
                              FontFamily="Helvetica"
                              FontWeight="Light"
@@ -228,7 +228,7 @@
                         <TextBox.Style>
                             <Style TargetType="TextBox">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=Residency}" Value="">
+                                    <DataTrigger Binding="{Binding Text, ElementName=Address}" Value="">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>

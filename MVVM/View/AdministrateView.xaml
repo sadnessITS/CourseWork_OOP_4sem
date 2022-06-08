@@ -79,6 +79,7 @@
             </Border.Background>
             <DataGrid x:Name="UserDatabase"
                       Margin="10"
+                      CanUserAddRows="False"
                       IsReadOnly="False"
                       Style="{StaticResource DatabaseTheme}"
                       CellStyle="{StaticResource CellTheme}"

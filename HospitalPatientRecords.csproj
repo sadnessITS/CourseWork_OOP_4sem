@@ -66,6 +66,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MVVM\Model\Appointment.cs" />
     <Compile Include="MVVM\Model\Role.cs" />
     <Compile Include="MVVM\Model\MedicalCardHistory.cs" />
     <Compile Include="MVVM\Validation\Validate.cs" />
@@ -81,7 +82,9 @@
     <Compile Include="Core\RelayCommand.cs" />
     <Compile Include="MVVM\Model\Doctor.cs" />
     <Page Include="MVVM\View\AboutView.xaml" />
-    <Page Include="MVVM\View\AddingEntryWindow.xaml" />
+    <Page Include="MVVM\View\AddingApointmentWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MVVM\View\AddingMedicalSpecializationWindow.xaml" />
     <Page Include="MVVM\View\AddingPatientWindow.xaml" />
     <Page Include="MVVM\View\AddingUserWindow.xaml" />
@@ -99,7 +102,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MVVM\View\ScheduleView.xaml" />
+    <Page Include="MVVM\View\AppointmentView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MVVM\View\SearchPatientWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Theme\AddingFieldTheme.xaml" />
     <Page Include="Theme\DiagnosisInfoTheme.xaml" />
     <Page Include="Theme\GeneralButtonTheme.xaml" />
@@ -123,8 +132,8 @@
     <Compile Include="MVVM\View\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\View\AddingEntryWindow.xaml.cs">
-      <DependentUpon>AddingEntryWindow.xaml</DependentUpon>
+    <Compile Include="MVVM\View\AddingApointmentWindow.xaml.cs">
+      <DependentUpon>AddingApointmentWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\View\AddingMedicalSpecializationWindow.xaml.cs">
       <DependentUpon>AddingMedicalSpecializationWindow.xaml</DependentUpon>
@@ -163,8 +172,11 @@
     <Compile Include="MVVM\View\AddingDiagnosisWindow.xaml.cs">
       <DependentUpon>AddingDiagnosisWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MVVM\View\ScheduleView.xaml.cs">
-      <DependentUpon>ScheduleView.xaml</DependentUpon>
+    <Compile Include="MVVM\View\AppointmentView.xaml.cs">
+      <DependentUpon>AppointmentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\View\SearchPatientWindow.xaml.cs">
+      <DependentUpon>SearchPatientWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

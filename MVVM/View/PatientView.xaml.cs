@@ -125,7 +125,7 @@ namespace HospitalPatientRecords.MVVM.View
 
         private Expression<Func<MedicalCardHistory, bool>> checkSearchCriterias()
         {
-            return m => m.Patient.Fio.Contains(Searcher.Text) || m.Patient.Residency.Contains(Searcher.Text) || m.CardNumber.ToString().Contains(Searcher.Text);
+            return m => m.Patient.Fio.Contains(Searcher.Text) || m.Patient.Address.Contains(Searcher.Text) || m.CardNumber.ToString().Contains(Searcher.Text);
         }
     }
 }

@@ -84,23 +84,15 @@
                       Style="{StaticResource DatabaseTheme}"
                       CellStyle="{StaticResource CellTheme}"
                       ColumnHeaderStyle="{StaticResource ColumnHeaderTheme}">
-            <DataGrid.Columns>
-                    <DataGridTextColumn Header="Card Number"
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Patient Name"
                                         MinWidth="150"
-                                        Width="*"
-                                        Binding="{Binding CardNumber}"/>
-                    <DataGridTextColumn Header="Full Name"
-                                        MinWidth="150"
-                                        Width="*"
+                                        Width="0.8*"
                                         Binding="{Binding Patient.Fio}"/>
-                    <DataGridTextColumn Header="Anamnesis"
-                                        MinWidth="150"
-                                        Width="*"
-                                        Binding="{Binding Patient.Age}"/>
                     <DataGridTextColumn Header="Date"
                                         MinWidth="150"
-                                        Width="*"
-                                        Binding="{Binding Patient.Residency}"/>
+                                        Width="0.2*"
+                                        Binding="{Binding AppointmentTime}"/>
             </DataGrid.Columns>
             </DataGrid>
         </Border>
