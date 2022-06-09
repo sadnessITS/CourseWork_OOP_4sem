@@ -4,6 +4,8 @@ using System.Windows.Input;
 using System.Linq;
 using HospitalPatientRecords.MVVM.Model;
 using HospitalPatientRecords.MVVM.ViewModel;
+using System.Windows.Controls;
+using System;
 
 namespace HospitalPatientRecords.MVVM.View;
 
@@ -26,8 +28,27 @@ public partial class DiagnosisWindow : Window
         SexField.Text = medicalCardHistory.Patient.Sex;
         AddressField.Text = medicalCardHistory.Patient.Address;
         CopyPapersField.Text = medicalCardHistory.Address;
+
+        checkIfFrequencyRecordExistsAndSetButtonName();
     }
-    
+
+    private void checkIfFrequencyRecordExistsAndSetButtonName()
+    {
+        object doctorObject;
+
+        VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.Key.CURRENT_DOCTOR, out doctorObject);
+
+        Doctor currentDoctor = doctorObject as Doctor;
+
+        DoctorVisitsFrequency frequency = dbContext.DoctorVisitsFrequency
+            .FirstOrDefault(fr => fr.Patient.Id == medicalCardHistory.Patient.Id && fr.Doctor.Id == currentDoctor.Id);
+
+        if (frequency == null)
+            notificationSwitcher.Content = "Notify";
+        else
+            notificationSwitcher.Content = "Don't Notify";
+    }
+
     public void UpdateDiagnosis()
     {
         List<Diagnosis> selectedDiagnoses = dbContext.Diagnosis.ToList();
@@ -131,7 +152,38 @@ public partial class DiagnosisWindow : Window
         CardHistoryView cardHistoryView = new CardHistoryView(dbContext, medicalCardHistory.Patient);
         cardHistoryView.ShowDialog();
     }
-    
+
+    private void NotificationSwitcher_Click(object sender, RoutedEventArgs e)
+    {
+        object doctorObject;
+
+        VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.Key.CURRENT_DOCTOR, out doctorObject);
+
+        Doctor currentDoctor = doctorObject as Doctor;
+
+        DoctorVisitsFrequency frequency = dbContext.DoctorVisitsFrequency
+            .FirstOrDefault(fr => fr.Patient.Id == medicalCardHistory.Patient.Id && fr.Doctor.Id == currentDoctor.Id);
+
+        if (frequency == null)
+        {
+            (sender as Button).Content = "Don't Notify";
+
+            DoctorVisitsFrequency doctorVisitsFrequency = new DoctorVisitsFrequency();
+            doctorVisitsFrequency.Doctor = currentDoctor;
+            doctorVisitsFrequency.Patient = medicalCardHistory.Patient;
+            doctorVisitsFrequency.Frequency = 360; // через сколько дней уведомлять
+
+            dbContext.DoctorVisitsFrequency.Add(doctorVisitsFrequency);
+            dbContext.SaveChanges();
+        }
+        else
+        {
+            (sender as Button).Content = "Notify";
+            dbContext.DoctorVisitsFrequency.Remove(frequency);
+            dbContext.SaveChanges();
+        }
+    }
+
     // private void ExpandList(string medicine)
     // {
     //     int idPatient = Convert.ToInt32(IdPatientField.Text);
@@ -156,5 +208,5 @@ public partial class DiagnosisWindow : Window
     // private void Surgeon_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Surgeon");
     // private void Therapist_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Therapist");
     // private void Therapist_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Therapist");
-    
+
 }
