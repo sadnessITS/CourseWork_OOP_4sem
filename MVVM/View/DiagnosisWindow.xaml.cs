@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Windows.Controls;
 using HospitalPatientRecords.MVVM.Model;
 using HospitalPatientRecords.MVVM.ViewModel;
 
@@ -132,6 +135,18 @@ public partial class DiagnosisWindow : Window
         cardHistoryView.ShowDialog();
     }
     
+    private void Searcher_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        var selectedList = dbContext.Diagnosis.Where(checkSearchCriterias()).ToList();
+
+        diagnosisDataGrid.ItemsSource = selectedList;
+    }
+
+    private Expression<Func<Diagnosis, bool>> checkSearchCriterias()
+    {
+        return m => m.Doctor.MedicalSpecialization.Name.Contains(Searcher.Text);
+    }
+    
     // private void ExpandList(string medicine)
     // {
     //     int idPatient = Convert.ToInt32(IdPatientField.Text);
@@ -156,5 +171,4 @@ public partial class DiagnosisWindow : Window
     // private void Surgeon_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Surgeon");
     // private void Therapist_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Therapist");
     // private void Therapist_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Therapist");
-    
 }

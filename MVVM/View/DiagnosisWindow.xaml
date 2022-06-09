@@ -234,17 +234,16 @@
             </StackPanel>
         </StackPanel>
         <Grid Grid.Row="3">
-            <Grid Grid.Row="0" Grid.Column="0" Name="Toolbar">
-                <StackPanel Orientation="Horizontal">
-                    <Border CornerRadius="10"
+            <StackPanel Orientation="Vertical" Margin="0,20,0,0">
+                <Border CornerRadius="10"
                         Background="#023e7d"
-                        Width="300" Height="40"
-                        Margin="30,0,0,10">
+                        Width="920" Height="40"
+                        Margin="30,0,0,0">
                         <Grid>
                             <Rectangle StrokeThickness="1"/>
                             <TextBox Margin="1"
-                                 x:Name="Searcher"
                                  TextChanged="Searcher_OnTextChanged"
+                                 x:Name="Searcher"
                                  FontFamily="Ubuntu"
                                  BorderThickness="0"
                                  Background="Transparent"
@@ -273,24 +272,26 @@
                                 </TextBox.Style>
                             </TextBox>
                         </Grid>
-                    </Border>
-                </StackPanel>
-            </Grid>
-            <Border  CornerRadius="10" Margin="50,30,50,30">
-                <Border.Background>
-                    <LinearGradientBrush>
-                        <GradientStop Color="#023e7d" Offset="0"/>
-                        <GradientStop Color="#002855" Offset="0.5"/>
-                        <GradientStop Color="#001845" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-                <DataGrid x:Name="diagnosisDataGrid"
-                          Margin="10"
-                          CanUserAddRows="False"
-                          IsReadOnly="False"
-                          Style="{StaticResource DatabaseTheme}"
-                          CellStyle="{StaticResource CellTheme}"
-                          ColumnHeaderStyle="{StaticResource ColumnHeaderTheme}">
+                </Border>
+                
+            </StackPanel>
+            <Border  CornerRadius="10" Margin="0,80,0,30">
+                
+                    <Border.Background>
+                        <LinearGradientBrush>
+                            <GradientStop Color="#023e7d" Offset="0"/>
+                            <GradientStop Color="#002855" Offset="0.5"/>
+                            <GradientStop Color="#001845" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                
+                    <DataGrid x:Name="diagnosisDataGrid"
+                              Margin="10,0,0,0"
+                              CanUserAddRows="False"
+                              IsReadOnly="False"
+                              Style="{StaticResource DatabaseTheme}"
+                              CellStyle="{StaticResource CellTheme}"
+                              ColumnHeaderStyle="{StaticResource ColumnHeaderTheme}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Doctor's Name"
                                             MinWidth="150"

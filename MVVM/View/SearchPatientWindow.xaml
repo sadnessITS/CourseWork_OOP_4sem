@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HospitalPatientRecords.MVVM.View"
         mc:Ignorable="d"
-        Title="Search Patient" Height="1000" Width="1000"
+        Title="Search Patient" Height="700" Width="1000"
         WindowStyle="None"
         ResizeMode="NoResize"
         Background="Transparent"
@@ -17,8 +17,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="100"/>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="580"/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
 
@@ -79,19 +78,23 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="2">
-            <Grid>
-                <Rectangle StrokeThickness="1"/>
-                <TextBox Margin="1"
-                                 x:Name="Searcher"
+        <Grid Grid.Row="2" Margin="0,0,0,0">
+            <Border CornerRadius="10"
+                        Background="#023e7d"
+                        Width="920" Height="40"
+                        Margin="30,0,0,0">
+                        <Grid>
+                            <Rectangle StrokeThickness="1"/>
+                            <TextBox Margin="1"
                                  TextChanged="Searcher_TextChanged"
+                                 x:Name="Searcher"
                                  FontFamily="Ubuntu"
                                  BorderThickness="0"
                                  Background="Transparent"
                                  VerticalAlignment="Center"
                                  Padding="5"
                                  Foreground="White"/>
-                <TextBox IsHitTestVisible="False"
+                            <TextBox IsHitTestVisible="False"
                                  Text="Search"
                                  FontFamily="Ubuntu"
                                  VerticalAlignment="Center"
@@ -101,23 +104,23 @@
                                  BorderThickness="0"
                                  Background="Transparent"
                                  Foreground="DarkGray">
-                    <TextBox.Style>
-                        <Style TargetType="TextBox">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Text, ElementName=Searcher}" Value="">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                            <Setter Property="Visibility" Value="Hidden"/>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
-            </Grid>
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, ElementName=Searcher}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </Grid>
+                </Border>
         </Grid>
-
-
+        
         <Grid Grid.Row="3">
-            <Border  CornerRadius="10" Margin="50,30,50,30">
+            <Border  CornerRadius="10" Margin="50,20,50,30">
                 <Border.Background>
                     <LinearGradientBrush>
                         <GradientStop Color="#023e7d" Offset="0"/>
