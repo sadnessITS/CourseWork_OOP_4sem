@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Windows.Controls;
 using HospitalPatientRecords.MVVM.Model;
 using HospitalPatientRecords.MVVM.ViewModel;
 using System.Windows.Controls;
@@ -152,7 +155,7 @@ public partial class DiagnosisWindow : Window
         CardHistoryView cardHistoryView = new CardHistoryView(dbContext, medicalCardHistory.Patient);
         cardHistoryView.ShowDialog();
     }
-
+    
     private void NotificationSwitcher_Click(object sender, RoutedEventArgs e)
     {
         object doctorObject;
@@ -183,30 +186,16 @@ public partial class DiagnosisWindow : Window
             dbContext.SaveChanges();
         }
     }
+    
+    private void Searcher_OnTextChanged(object sender, TextChangedEventArgs e)
+    {
+        var selectedList = dbContext.Diagnosis.Where(checkSearchCriterias()).ToList();
 
-    // private void ExpandList(string medicine)
-    // {
-    //     int idPatient = Convert.ToInt32(IdPatientField.Text);
-    //     var tempList = db.Diagnosis.Where(d => d.IdPatient == idPatient && d.Medicine == medicine).ToList();
-    //     if (tempList.Count >= 1) _diagnosisList.AddRange(tempList);
-    // }
-    //
-    // private void ReduceList(string medicine)
-    // {
-    //     int idPatient = Convert.ToInt32(IdPatientField.Text);
-    //     var tempList = db.Diagnosis.Where(d => d.IdPatient == idPatient && d.Medicine == medicine).ToList();
-    //     if (tempList.Count != _diagnosisList.Count) _diagnosisList.RemoveRange(_diagnosisList.Count - 1, tempList.Count);
-    // }
-    //
-    // private void DentistCheckBox_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Dentist");
-    // private void DentistCheckBox_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Dentist");
-    // private void ENT_OnChecked(object sender, RoutedEventArgs e) => ExpandList("ENT");
-    // private void ENT_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("ENT");
-    // private void Psychiatrist_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Psychiatrist");
-    // private void Psychiatrist_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Psychiatrist");
-    // private void Surgeon_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Surgeon");
-    // private void Surgeon_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Surgeon");
-    // private void Therapist_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Therapist");
-    // private void Therapist_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Therapist");
+        diagnosisDataGrid.ItemsSource = selectedList;
+    }
 
+    private Expression<Func<Diagnosis, bool>> checkSearchCriterias()
+    {
+        return m => m.Doctor.MedicalSpecialization.Name.Contains(Searcher.Text);
+    }
 }

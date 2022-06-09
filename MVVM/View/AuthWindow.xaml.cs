@@ -90,7 +90,12 @@ namespace HospitalPatientRecords.MVVM.View
             if (user.Role == Role.USER)
             {
                 FuncShell funcShell = new FuncShell(dbContext);
+                
+                VarsDictionary.varsDictionary.Remove(VarsDictionary.Key.CURRENT_DOCTOR);
+                VarsDictionary.varsDictionary.Add(VarsDictionary.Key.CURRENT_DOCTOR, user);
+                
                 funcShell.UserDb.Visibility = Visibility.Collapsed;
+                funcShell.DetermineCurrentUser();
                 funcShell.Show();
                 this.Close();
             }
@@ -98,8 +103,8 @@ namespace HospitalPatientRecords.MVVM.View
             if (user.Role == Role.ADMIN)
             {
                 FuncShell funcShell = new FuncShell(dbContext);
-                FuncShellViewModel funcShellViewModel = new FuncShellViewModel();
 
+                VarsDictionary.varsDictionary.Remove(VarsDictionary.Key.CURRENT_DOCTOR);
                 VarsDictionary.varsDictionary.Add(VarsDictionary.Key.CURRENT_DOCTOR, user);
                 
                 funcShell.DetermineCurrentUser();

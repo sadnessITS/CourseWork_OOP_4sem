@@ -16,6 +16,7 @@ namespace HospitalPatientRecords.MVVM.View
             InitializeComponent();
             this.dbContext = dbContext;
             
+            VarsDictionary.varsDictionary.Remove(VarsDictionary.Key.DB_CONTEXT);
             VarsDictionary.varsDictionary.Add(VarsDictionary.Key.DB_CONTEXT, this.dbContext);
         }
 
