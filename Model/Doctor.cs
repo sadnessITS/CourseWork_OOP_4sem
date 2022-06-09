@@ -8,13 +8,10 @@ namespace HospitalPatientRecords.MVVM.Model
         [Key]
         public int Id { get; set; }
         
-        [Text]
         public string Login { get; set; }
         
-        [Text]
         public string Password { get; set; }
 
-        [Text]
         public string Fio { get; set; }
 
         public int? IdMedicalSpecialization { get; set; }

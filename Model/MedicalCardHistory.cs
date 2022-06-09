@@ -4,20 +4,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HospitalPatientRecords.MVVM.Model
 {
-    public class DoctorVisitsFrequency
+    public class MedicalCardHistory
     {
         [Key]
         public int Id { get; set; }
-        public int Frequency { get; set; } // через сколько дней уведомлять
+        public int CardNumber { get; set; }
 
         public int? IdPatient { get; set; }
 
+        [Required]
         [ForeignKey("IdPatient")]
         public Patient Patient { get; set; }
 
-        public int? IdDoctor { get; set; }
+        public string Address{ get; set; }
 
-        [ForeignKey("IdDoctor")]
-        public Doctor Doctor { get; set; }
+        public DateTime Date { get; set; }
+
+        public string ActionWithCard { get; set; }
     }
 }

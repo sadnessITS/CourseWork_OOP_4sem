@@ -1,12 +1,12 @@
 ﻿using HospitalPatientRecords.MVVM.Model;
 using System.Data.Entity;
 
-namespace HospitalPatientRecords.MVVM.ViewModel
+namespace HospitalPatientRecords.Core
 {
     public partial class AccountantCourseworkContext : DbContext
     {
         public AccountantCourseworkContext() : base("name = AccountantCourseworkEntities") { }
-        
+
         public DbSet<Diagnosis> Diagnosis { get; set; }
 
         public DbSet<Doctor> Doctor { get; set; }
