@@ -8,6 +8,7 @@ using System.Windows;
 
 using System.Collections.Generic;
 using HospitalPatientRecords.MVVM.Model;
+using System.IO;
 
 namespace HospitalPatientRecords.Windows
 {
@@ -25,7 +26,7 @@ namespace HospitalPatientRecords.Windows
 
         private const string userName = "ppireiko@mail.ru";
         private const string password = "k11ieGMOarshXfOTLJ7M";
-
+        private readonly string LOG_FILE_PATH = "notifier.log";
         private static TimeSpan oneDay = new TimeSpan(1, 0, 0, 0);
 
         private volatile bool isRunning = true;
@@ -57,28 +58,36 @@ namespace HospitalPatientRecords.Windows
 
                 foreach (Patient patient in patientsToCheck)
                 {
-                    Diagnosis diagnosis = dbContext.Diagnosis
-                        .OrderByDescending(d => d.Date)
-                        .FirstOrDefault(d => d.Patient.Id == patient.Id);
-
-                    DoctorVisitsFrequency doctorVisitsFrequency = dbContext.DoctorVisitsFrequency
-                        .FirstOrDefault(d => d.Patient.Id == patient.Id);
-
-                    MedicalSpecialization medicalSpecialization = dbContext.MedicalSpecialization
-                        .FirstOrDefault(ms => ms.Id == doctorVisitsFrequency.IdMedicalSpecialization);
-
-                    int frequency = doctorVisitsFrequency.Frequency;
-
-                    bool toSend = DateTime.Now > diagnosis.Date.AddDays(frequency);
-
-                    if (toSend)
+                    try
                     {
-                        MailMessage message = new MailMessage(userName, patient.email);
-                        message.Subject = "HospitalNotifier";
-                        message.Body = "You need visit a doctor: " + medicalSpecialization.Name;
-                        message.IsBodyHtml = false;
+                        Diagnosis diagnosis = dbContext.Diagnosis
+                            .OrderByDescending(d => d.Date)
+                            .FirstOrDefault(d => d.Patient.Id == patient.Id);
 
-                        mailClient.Send(message);
+                        DoctorVisitsFrequency doctorVisitsFrequency = dbContext.DoctorVisitsFrequency
+                            .FirstOrDefault(d => d.Patient.Id == patient.Id);
+
+                        MedicalSpecialization medicalSpecialization = dbContext.MedicalSpecialization
+                            .FirstOrDefault(ms => ms.Id == doctorVisitsFrequency.IdMedicalSpecialization);
+
+                        int frequency = doctorVisitsFrequency.Frequency;
+
+                        bool toSend = DateTime.Now > diagnosis.Date.AddDays(frequency);
+
+                        if (toSend)
+                        {
+                            MailMessage message = new MailMessage(userName, patient.email);
+                            message.Subject = "HospitalNotifier";
+                            message.Body = "You need visit a doctor: " + medicalSpecialization.Name;
+                            message.IsBodyHtml = false;
+
+                            mailClient.Send(message);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        File.AppendAllText(LOG_FILE_PATH, ex.ToString());
+                        continue;
                     }
                 }
 
@@ -89,7 +98,6 @@ namespace HospitalPatientRecords.Windows
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             isRunning = false;
-            worker.CancelAsync();
         }
     }
 }
