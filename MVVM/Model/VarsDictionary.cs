@@ -8,7 +8,8 @@ public class VarsDictionary
     {
         CURRENT_DOCTOR,
         DB_CONTEXT,
-        SELECTED_IN_SEARCH_PATIENT
+        SELECTED_IN_SEARCH_PATIENT,
+        EMAIL_SETUP
     }
 
     public static Dictionary<Key, object> varsDictionary = new Dictionary<Key, object>();

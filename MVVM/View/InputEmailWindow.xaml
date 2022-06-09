@@ -1,4 +1,4 @@
-<Window x:Class="HospitalPatientRecords.MVVM.View.AddingEntryWindow"
+<Window x:Class="HospitalPatientRecords.MVVM.View.InputEmailWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:HospitalPatientRecords.MVVM.View"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
-        Title="AddingEntryWindow" Height="400" Width="380"
+        Title="AddingEntryWindow" Height="310" Width="380"
         AllowsTransparency="True" Background="Transparent"
         WindowStyle="None" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
@@ -14,7 +14,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="80"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
  
@@ -62,10 +62,10 @@
             </Image>
         </StackPanel>
         
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="0,10,0,0">
             <StackPanel Name="Logo" Background="Transparent" Orientation="Horizontal" MouseDown="DrugWindow" HorizontalAlignment="Center">
                 <Image Source="../../Source/Image/hospital-logo.png" Width="50" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <TextBlock Text="Adding Appointment"
+                <TextBlock Text="Email Setup"
                            FontWeight="Medium"
                            FontFamily="Helvetica"
                            FontSize="21"
@@ -78,20 +78,36 @@
         <StackPanel Grid.Row="2">
             <StackPanel Orientation="Horizontal">
                 <Grid Margin="63,30,0,0">
-                    <TextBox x:Name="FioField"
+                    <TextBox x:Name="emailField"
                              Style="{StaticResource AddingFieldTheme}"
                              Height="25"/>
-                    <Button x:Name="searchPatient"
-                             Content="Select patient"
+                    <TextBox Text="Patient Email"
+                             IsHitTestVisible="False"
                              FontFamily="Helvetica"
                              FontWeight="Light"
                              FontSize="20"
                              HorizontalAlignment="Center"
+                             Foreground="White"
+                             Background="Transparent"
+                             BorderThickness="0"
                              Width="250"
                              HorizontalContentAlignment="Left"
+                             Focusable="False"
                              Cursor="Arrow"
-                             Click="searchPatient_Click"/>
-                    <iconPacks:PackIconFontAwesome Kind="UserRegular" 
+                             IsReadOnly="True"
+                             Opacity="0.5">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=emailField}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                    <iconPacks:PackIconFontAwesome Kind="PenSolid" 
                                                    VerticalAlignment="Center" 
                                                    HorizontalAlignment="Right" 
                                                    Foreground="White"
@@ -103,28 +119,8 @@
                     Height="2"
                     Background="White"
                     Opacity="0.5"/>
-            <Border Width="250"
-                    Height="2"
-                    Background="White"
-                    Opacity="0.5"/>
-            <StackPanel Orientation="Horizontal">
-                <Grid Margin="63,30,0,0" HorizontalAlignment="Center">
-                    <DatePicker Name="meetingDate" IsDropDownOpen="False" SelectedDateFormat="Short"
-                                FontFamily="Helvetica"
-                                FontWeight="Light"
-                                FontSize="18"
-                                Foreground="Black"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                Width="250"/>
-                </Grid>
-            </StackPanel>
-            <Border Width="250"
-                    Height="2"
-                    Background="White"
-                    Opacity="0.5"/>
-            <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
-                <Button x:Name="Add" Click="Add_Click"  Width="230" Height="40" Content="ADD" FontSize="13" Margin="70,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
+            <StackPanel Orientation="Horizontal" Margin="0,50,0,0">
+                <Button x:Name="Save" Click="Save_OnClick" Width="230" Height="40" Content="SAVE" FontSize="13" Margin="70,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -44,7 +44,8 @@ public partial class DiagnosisWindow : Window
         Doctor currentDoctor = doctorObject as Doctor;
 
         DoctorVisitsFrequency frequency = dbContext.DoctorVisitsFrequency
-            .FirstOrDefault(fr => fr.Patient.Id == medicalCardHistory.Patient.Id && fr.Doctor.Id == currentDoctor.Id);
+            .FirstOrDefault(fr => fr.Patient.Id == medicalCardHistory.Patient.Id &&
+                                  fr.MedicalSpecialization.Id == currentDoctor.MedicalSpecialization.Id);
 
         if (frequency == null)
             notificationSwitcher.Content = "Notify";
@@ -165,15 +166,31 @@ public partial class DiagnosisWindow : Window
         Doctor currentDoctor = doctorObject as Doctor;
 
         DoctorVisitsFrequency frequency = dbContext.DoctorVisitsFrequency
-            .FirstOrDefault(fr => fr.Patient.Id == medicalCardHistory.Patient.Id && fr.Doctor.Id == currentDoctor.Id);
+            .FirstOrDefault(fr => fr.Patient.Id == medicalCardHistory.Patient.Id &&
+                                  fr.MedicalSpecialization.Id == currentDoctor.MedicalSpecialization.Id);
 
         if (frequency == null)
         {
+
+            InputEmailWindow inputEmailWindow = new InputEmailWindow(dbContext, medicalCardHistory);
+            inputEmailWindow.ShowDialog();
+            
+            object emailObject;
+            if (!VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.Key.EMAIL_SETUP, out emailObject))
+            {
+                MessageWindow messageWindow = new MessageWindow();
+                messageWindow.MessageField.Text = "You have to input email!";
+                messageWindow.ShowDialog();
+                return;
+            };
+            string email = emailObject as string;
+
             (sender as Button).Content = "Don't Notify";
 
             DoctorVisitsFrequency doctorVisitsFrequency = new DoctorVisitsFrequency();
-            doctorVisitsFrequency.Doctor = currentDoctor;
+            doctorVisitsFrequency.MedicalSpecialization = currentDoctor.MedicalSpecialization;
             doctorVisitsFrequency.Patient = medicalCardHistory.Patient;
+            doctorVisitsFrequency.Patient.email = email;
             doctorVisitsFrequency.Frequency = 360; // через сколько дней уведомлять
 
             dbContext.DoctorVisitsFrequency.Add(doctorVisitsFrequency);

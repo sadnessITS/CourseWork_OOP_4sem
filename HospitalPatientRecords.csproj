@@ -90,6 +90,7 @@
     <Page Include="MVVM\View\AddingUserWindow.xaml" />
     <Page Include="MVVM\View\AdministrateView.xaml" />
     <Page Include="MVVM\View\CardHistoryView.xaml" />
+    <Page Include="MVVM\View\InputEmailWindow.xaml" />
     <Page Include="MVVM\View\MedicalSpecializationView.xaml" />
     <Page Include="MVVM\View\PatientView.xaml">
       <SubType>Designer</SubType>
@@ -149,6 +150,9 @@
     </Compile>
     <Compile Include="MVVM\View\CardHistoryView.xaml.cs">
       <DependentUpon>CardHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MVVM\View\InputEmailWindow.xaml.cs">
+      <DependentUpon>InputEmailWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MVVM\View\MedicalSpecializationView.xaml.cs">
       <DependentUpon>MedicalSpecializationView.xaml</DependentUpon>
