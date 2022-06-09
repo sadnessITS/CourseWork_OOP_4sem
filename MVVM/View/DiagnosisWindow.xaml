@@ -275,7 +275,7 @@
                 </Border>
                 
             </StackPanel>
-            <Border  CornerRadius="10" Margin="0,80,0,30">
+            <Border  CornerRadius="10" Margin="50,80,50,30">
                 
                     <Border.Background>
                         <LinearGradientBrush>
@@ -286,7 +286,7 @@
                     </Border.Background>
                 
                     <DataGrid x:Name="diagnosisDataGrid"
-                              Margin="10,0,0,0"
+                              Margin="10"
                               CanUserAddRows="False"
                               IsReadOnly="False"
                               Style="{StaticResource DatabaseTheme}"

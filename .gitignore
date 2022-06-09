@@ -429,3 +429,6 @@ fabric.properties
 
 # Rider Custom
 .idea
+
+# for saving DB connecting
+App.config
