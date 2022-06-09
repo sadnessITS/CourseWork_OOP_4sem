@@ -318,10 +318,11 @@
             </Border>
         </Grid>
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,30">
-            <Button x:Name="Save" Click="Save_OnClick" Width="200" Height="40" Content="SAVE" FontSize="13" Margin="0,0,0, 0" Style="{StaticResource GeneralButtonTheme}"/>
-            <Button x:Name="CardHistory" Click="CardHistory_OnClick" Width="200" Height="40" Content="CARD" FontSize="13" Margin="30,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
-            <Button x:Name="AddDiagnosis" Click="AddDiagnosis_Click" Width="200" Height="40" Content="ADD" FontSize="13" Margin="30,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
-            <Button x:Name="DeleteDiagnosis" Click="DeleteDiagnosis_Click" Width="200" Height="40" Content="DELETE" FontSize="13" Margin="30,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
+            <Button x:Name="Save" Click="Save_OnClick" Width="150" Height="40" Content="SAVE" FontSize="13" Margin="0,0,0, 0" Style="{StaticResource GeneralButtonTheme}"/>
+            <Button x:Name="CardHistory" Click="CardHistory_OnClick" Width="150" Height="40" Content="CARD" FontSize="13" Margin="30,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
+            <Button x:Name="AddDiagnosis" Click="AddDiagnosis_Click" Width="150" Height="40" Content="ADD" FontSize="13" Margin="30,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
+            <Button x:Name="DeleteDiagnosis" Click="DeleteDiagnosis_Click" Width="150" Height="40" Content="DELETE" FontSize="13" Margin="30,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
+            <Button x:Name="notificationSwitcher" Click="NotificationSwitcher_Click" Width="150" Height="40" Content="NOTIFY" FontSize="13" Margin="30,0,0,0" Style="{StaticResource GeneralButtonTheme}"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HospitalPatientRecords.MVVM.Model
@@ -7,7 +8,7 @@ namespace HospitalPatientRecords.MVVM.Model
     {
         [Key]
         public int Id { get; set; }
-        public string Frequency { get; set; }
+        public int Frequency { get; set; } // через сколько дней уведомлять
 
         public int? IdPatient { get; set; }
 

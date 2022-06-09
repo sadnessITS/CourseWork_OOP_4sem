@@ -7,6 +7,8 @@ using System.Linq.Expressions;
 using System.Windows.Controls;
 using HospitalPatientRecords.MVVM.Model;
 using HospitalPatientRecords.MVVM.ViewModel;
+using System.Windows.Controls;
+using System;
 
 namespace HospitalPatientRecords.MVVM.View;
 
@@ -29,8 +31,27 @@ public partial class DiagnosisWindow : Window
         SexField.Text = medicalCardHistory.Patient.Sex;
         AddressField.Text = medicalCardHistory.Patient.Address;
         CopyPapersField.Text = medicalCardHistory.Address;
+
+        checkIfFrequencyRecordExistsAndSetButtonName();
     }
-    
+
+    private void checkIfFrequencyRecordExistsAndSetButtonName()
+    {
+        object doctorObject;
+
+        VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.Key.CURRENT_DOCTOR, out doctorObject);
+
+        Doctor currentDoctor = doctorObject as Doctor;
+
+        DoctorVisitsFrequency frequency = dbContext.DoctorVisitsFrequency
+            .FirstOrDefault(fr => fr.Patient.Id == medicalCardHistory.Patient.Id && fr.Doctor.Id == currentDoctor.Id);
+
+        if (frequency == null)
+            notificationSwitcher.Content = "Notify";
+        else
+            notificationSwitcher.Content = "Don't Notify";
+    }
+
     public void UpdateDiagnosis()
     {
         List<Diagnosis> selectedDiagnoses = dbContext.Diagnosis.ToList();
@@ -135,6 +156,37 @@ public partial class DiagnosisWindow : Window
         cardHistoryView.ShowDialog();
     }
     
+    private void NotificationSwitcher_Click(object sender, RoutedEventArgs e)
+    {
+        object doctorObject;
+
+        VarsDictionary.varsDictionary.TryGetValue(VarsDictionary.Key.CURRENT_DOCTOR, out doctorObject);
+
+        Doctor currentDoctor = doctorObject as Doctor;
+
+        DoctorVisitsFrequency frequency = dbContext.DoctorVisitsFrequency
+            .FirstOrDefault(fr => fr.Patient.Id == medicalCardHistory.Patient.Id && fr.Doctor.Id == currentDoctor.Id);
+
+        if (frequency == null)
+        {
+            (sender as Button).Content = "Don't Notify";
+
+            DoctorVisitsFrequency doctorVisitsFrequency = new DoctorVisitsFrequency();
+            doctorVisitsFrequency.Doctor = currentDoctor;
+            doctorVisitsFrequency.Patient = medicalCardHistory.Patient;
+            doctorVisitsFrequency.Frequency = 360; // через сколько дней уведомлять
+
+            dbContext.DoctorVisitsFrequency.Add(doctorVisitsFrequency);
+            dbContext.SaveChanges();
+        }
+        else
+        {
+            (sender as Button).Content = "Notify";
+            dbContext.DoctorVisitsFrequency.Remove(frequency);
+            dbContext.SaveChanges();
+        }
+    }
+    
     private void Searcher_OnTextChanged(object sender, TextChangedEventArgs e)
     {
         var selectedList = dbContext.Diagnosis.Where(checkSearchCriterias()).ToList();
@@ -146,29 +198,4 @@ public partial class DiagnosisWindow : Window
     {
         return m => m.Doctor.MedicalSpecialization.Name.Contains(Searcher.Text);
     }
-    
-    // private void ExpandList(string medicine)
-    // {
-    //     int idPatient = Convert.ToInt32(IdPatientField.Text);
-    //     var tempList = db.Diagnosis.Where(d => d.IdPatient == idPatient && d.Medicine == medicine).ToList();
-    //     if (tempList.Count >= 1) _diagnosisList.AddRange(tempList);
-    // }
-    //
-    // private void ReduceList(string medicine)
-    // {
-    //     int idPatient = Convert.ToInt32(IdPatientField.Text);
-    //     var tempList = db.Diagnosis.Where(d => d.IdPatient == idPatient && d.Medicine == medicine).ToList();
-    //     if (tempList.Count != _diagnosisList.Count) _diagnosisList.RemoveRange(_diagnosisList.Count - 1, tempList.Count);
-    // }
-    //
-    // private void DentistCheckBox_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Dentist");
-    // private void DentistCheckBox_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Dentist");
-    // private void ENT_OnChecked(object sender, RoutedEventArgs e) => ExpandList("ENT");
-    // private void ENT_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("ENT");
-    // private void Psychiatrist_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Psychiatrist");
-    // private void Psychiatrist_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Psychiatrist");
-    // private void Surgeon_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Surgeon");
-    // private void Surgeon_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Surgeon");
-    // private void Therapist_OnChecked(object sender, RoutedEventArgs e) => ExpandList("Therapist");
-    // private void Therapist_OnUnchecked(object sender, RoutedEventArgs e) => ReduceList("Therapist");
 }
