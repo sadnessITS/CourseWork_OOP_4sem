@@ -69,6 +69,12 @@ namespace HospitalPatientRecords.MVVM.View
                 
                 List<Appointment> appointmentDel = dbContext.Appointment
                     .Where(o => o.Patient.Id == itemDel.Id).ToList();
+                
+                List<MedicalCardHistory> medicalCardHistoryDel = dbContext.MedicalCardHistory
+                    .Where(o => o.Patient.Id == itemDel.Id).ToList();
+                
+                List<DoctorVisitsFrequency> doctorVisitsFrequenciesDel = dbContext.DoctorVisitsFrequency
+                    .Where(o => o.Patient.Id == itemDel.Id).ToList();
 
                 foreach (var d in diagnosisDel)
                 {
@@ -85,6 +91,15 @@ namespace HospitalPatientRecords.MVVM.View
                     dbContext.Appointment.Remove(a);
                 }
                 
+                foreach (var mh in medicalCardHistoryDel)
+                {
+                    dbContext.MedicalCardHistory.Remove(mh);
+                }
+
+                foreach (var fr in doctorVisitsFrequenciesDel)
+                {
+                    dbContext.DoctorVisitsFrequency.Remove(fr);
+                }
                 dbContext.Patient.Remove(patientDel);
                 dbContext.SaveChanges();
                 

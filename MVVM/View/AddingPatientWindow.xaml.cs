@@ -81,7 +81,6 @@ namespace HospitalPatientRecords.MVVM.View
             
             try
             {
-
                 Patient patient = new Patient();
                 patient.Fio = Fio.Text;
                 patient.Age = Convert.ToInt32(Age.Text);

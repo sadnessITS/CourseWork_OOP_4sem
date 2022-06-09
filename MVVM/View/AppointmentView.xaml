@@ -92,7 +92,7 @@
                     <DataGridTextColumn Header="Date"
                                         MinWidth="150"
                                         Width="0.2*"
-                                        Binding="{Binding AppointmentTime, StringFormat=dd/MM/yyyy}"/>
+                                        Binding="{Binding AppointmentTime}"/>
             </DataGrid.Columns>
             </DataGrid>
         </Border>

@@ -32,7 +32,14 @@ public partial class DiagnosisWindow : Window
         AddressField.Text = medicalCardHistory.Patient.Address;
         CopyPapersField.Text = medicalCardHistory.Address;
 
-        checkIfFrequencyRecordExistsAndSetButtonName();
+            checkIfFrequencyRecordExistsAndSetButtonName();
+        try
+        {
+        }
+        catch
+        {
+            
+        }
     }
 
     private void checkIfFrequencyRecordExistsAndSetButtonName()
@@ -43,31 +50,40 @@ public partial class DiagnosisWindow : Window
 
         Doctor currentDoctor = doctorObject as Doctor;
 
-        DoctorVisitsFrequency frequency = dbContext.DoctorVisitsFrequency
-            .FirstOrDefault(fr => fr.Patient.Id == medicalCardHistory.Patient.Id &&
-                                  fr.MedicalSpecialization.Id == currentDoctor.MedicalSpecialization.Id);
+        try
+        {
+            DoctorVisitsFrequency frequency = dbContext.DoctorVisitsFrequency
+                .FirstOrDefault(fr => fr.Patient.Id == medicalCardHistory.Patient.Id &&
+                                      fr.MedicalSpecialization.Id == currentDoctor.MedicalSpecialization.Id);
 
-        if (frequency == null)
-            notificationSwitcher.Content = "Notify";
-        else
-            notificationSwitcher.Content = "Don't Notify";
+            if (frequency == null)
+                notificationSwitcher.Content = "Notify";
+            else
+                notificationSwitcher.Content = "Don't Notify";
+        }
+        catch
+        {
+            
+        }
+
     }
 
     public void UpdateDiagnosis()
     {
         List<Diagnosis> selectedDiagnoses = dbContext.Diagnosis.ToList();
-            
+        
+        
         foreach (var d in selectedDiagnoses)
         {
             d.Doctor = dbContext.Doctor.Where(item => item.Id == d.IdDoctor).FirstOrDefault();
-
-            foreach (var dm in selectedDiagnoses)
-            {
-                dm.Doctor.MedicalSpecialization = dbContext.MedicalSpecialization.Where(item => item.Id == dm.Doctor.IdMedicalSpecialization).FirstOrDefault();
-            }
+            
+            d.Doctor.MedicalSpecialization = dbContext.MedicalSpecialization.Where(item => item.Id == d.Doctor.IdMedicalSpecialization).FirstOrDefault();
         }
+
+        var patientSelectedDiagnosis =
+            selectedDiagnoses.Where(item => item.Patient.Id == medicalCardHistory.Patient.Id).ToList();
         
-        diagnosisDataGrid.ItemsSource = selectedDiagnoses;
+        diagnosisDataGrid.ItemsSource = patientSelectedDiagnosis;
     } 
     
     private void DrugWindow(object sender, MouseButtonEventArgs e)

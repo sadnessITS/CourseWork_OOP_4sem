@@ -109,7 +109,7 @@
                     Opacity="0.5"/>
             <StackPanel Orientation="Horizontal">
                 <Grid Margin="63,30,0,0" HorizontalAlignment="Center">
-                    <DatePicker Name="meetingDate" IsDropDownOpen="False" SelectedDateFormat="Short"
+                    <DatePicker Name="meetingDate" IsDropDownOpen="False" SelectedDateFormat="Long"
                                 FontFamily="Helvetica"
                                 FontWeight="Light"
                                 FontSize="18"
